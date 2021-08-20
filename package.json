@@ -1,0 +1,17 @@
+{
+    "author": "ICJR",
+    "description": "Dash Dapp SDK",
+    "dependencies": {
+        "bignumber.js": "^9.0.1",
+        "dash": "^3.19.3",
+        "dot": "git+https://github.com/esportsplus/dot.git",
+        "glob": "^7.1.7",
+        "ipfs-core": "^0.8.0",
+        "node-polyfill-webpack-plugin": "^1.1.4",
+        "webpack": "^5.22.0",
+        "webpack-cli": "^4.5.0"
+    },
+    "name": "dapp",
+    "private": false,
+    "version": "0.0.1"
+}

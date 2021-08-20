@@ -66,7 +66,7 @@ const document = {
 const identity = {
     get: async () => {
         return await config.get('identity', async () => {
-            let data = wallet.read();
+            let data = await wallet.read();
 
             if (data.balance.confirmed > 0) {
                 return await dash.identity.create(client);

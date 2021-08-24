@@ -3,7 +3,7 @@
     "description": "Dash Dapp SDK",
     "dependencies": {
         "bignumber.js": "^9.0.1",
-        "dash": "^3.19.3",
+        "dash": "^3.20.3",
         "dot": "git+https://github.com/esportsplus/dot.git",
         "glob": "^7.1.7",
         "ipfs-core": "^0.8.0",

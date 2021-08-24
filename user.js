@@ -85,15 +85,20 @@ const init = async (reconnect = false) => {
     }
 
     if (!client) {
-        if (config.has('mnemonic')) {
+        let mnemonic = await config.get('mnemonic', false);
+
+        if (mnemonic) {
             options = {
-                wallet: {
-                    mnemonic: await config.get('mnemonic')
-                }
+                wallet: { mnemonic }
             }
         }
 
         await connect(options);
+
+        // Cache Fresh Mnemonic
+        if (!mnemonic) {
+            config.set('mnemonic', (await dash.wallet.read(client)).mnemonic);
+        }
     }
 };
 
@@ -107,14 +112,8 @@ const name = {
 };
 
 const wallet = {
-    read: async (refresh = false) => {
-        if (refresh) {
-            config.set('wallet', false);
-        }
-
-        return await config.get('wallet', async () => {
-            return await dash.wallet.read(client);
-        });
+    read: async () => {
+        return await dash.wallet.read(client);
     }
 };
 

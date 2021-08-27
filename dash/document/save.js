@@ -65,8 +65,6 @@ const save = async (client, documents, identityId, locator) => {
         }
     }
 
-	console.log(batch);
-
     if (!batch.create && !batch.replace) {
         return;
     }

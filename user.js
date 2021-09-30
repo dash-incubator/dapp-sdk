@@ -102,6 +102,15 @@ const init = async (reconnect = false) => {
     }
 };
 
+const message = {
+    decrypt: async (message) => {
+        return await dash.message.decrypt(client, message);
+    },
+    encrypt: async (message) => {
+        return await dash.message.encrypt(client, message);
+    }
+};
+
 const name = {
     read: async (name) => {
         return await dash.name.read(client, name);
@@ -118,4 +127,4 @@ const wallet = {
 };
 
 
-export default { apps, connect, contract, disconnect, document, identity, init, name, wallet };
+export default { apps, connect, contract, disconnect, document, identity, init, message, name, wallet };

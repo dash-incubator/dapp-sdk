@@ -1,5 +1,7 @@
 const encrypt = async (client, message) => {
-    return await client.account.encrypt('AES', message, await client.wallet.exportWallet());
+    let account = await client.getWalletAccount();
+
+    return await account.encrypt('AES', message, await client.wallet.exportWallet());
 }
 
 

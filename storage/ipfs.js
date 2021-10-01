@@ -36,8 +36,10 @@ const upload = {
     },
     file: async (content) => {
         await connect();
+        
+        let file = await node.add(content);
 
-        return await node.add(content);
+        return file.cid.toString();
     }
 };
 

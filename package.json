@@ -2,7 +2,7 @@
     "author": "ICJR",
     "description": "Dash Dapp SDK",
     "devDependencies": {
-        "@esportsplus/dot": "^0.0.2",
+        "@esportsplus/dot": "^0.0.3",
         "bignumber.js": "^9.0.1",
         "dash": "^3.21.5",
         "glob": "^7.1.7",

@@ -29,5 +29,5 @@
     },
     "types": "./build/index.d.ts",
     "unpkg": "./dist/dapp.min.js",
-    "version": "0.0.2"
+    "version": "0.0.3"
 }

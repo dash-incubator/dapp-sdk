@@ -4,11 +4,12 @@ const glob = require('glob');
 const webpack = require('webpack');
 
 
-const config = ({ filename, input, output, production }) => {
+const config = ({ filename, input, library, output, production }) => {
     let optimization = {
             usedExports: false
         };
 
+    filename = filename || 'app';
     production = production ? false : true;
 
     if (production) {
@@ -35,6 +36,9 @@ const config = ({ filename, input, output, production }) => {
         },
         optimization,
         output: {
+            // fixes ReferenceError: window is not defined
+            globalObject: "(typeof self !== 'undefined' ? self : this)",
+            library: library || filename,
             path: output,
         },
         plugins: [

@@ -88,6 +88,8 @@ const init = async (reconnect = false) => {
     if (!client) {
         let mnemonic = await config.get('mnemonic', false);
 
+        console.log({ mnemonic });
+
         if (mnemonic) {
             options = {
                 wallet: { mnemonic }

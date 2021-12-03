@@ -6,6 +6,11 @@ let data: object = {},
     key: string = 'config';
 
 
+(async () => {
+    data = await local.get(key);
+})();
+
+
 const clear = () => {
     local.delete(key);
 };

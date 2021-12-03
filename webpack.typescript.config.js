@@ -6,10 +6,12 @@ const webpack = require('webpack');
 
 const config = ({ filename, input, output, production }) => {
     let optimization = {
-        usedExports: false
-    };
+            usedExports: false
+        };
 
-    if (production === 'false') {
+    production = production ? false : true;
+
+    if (production) {
         optimization = {
             mangleWasmImports: false,
             minimize: false,
@@ -19,9 +21,9 @@ const config = ({ filename, input, output, production }) => {
 
     return {
         entry: {
-            [filename || 'app']: glob.sync(`${input}/{,!(node_modules)/**/}!(webpack)*!(.d).ts`)
+            [(filename || 'app') + (production ? '.min' : '')]: glob.sync(`${input}/{,!(node_modules)/**/}!(webpack)*!(.d).ts`)
         },
-        mode: (production === 'false' ? 'development' : 'production'),
+        mode: (production ? 'development' : 'production'),
         module: {
             rules: [
                 {

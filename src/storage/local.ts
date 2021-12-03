@@ -1,11 +1,15 @@
 import localforage from 'localforage';
 
 
-let config: { name: string, storeName: string, version: number } = {
-        name: 'dapp-kv',
-        storeName: 'dapp-kv',
-        version: 1.0
-    };
+type options = { description?: string, name?: string, storeName?: string, version?: number };
+
+
+let driver: any = localforage.LOCALSTORAGE;
+
+
+function init(options: object = {}): void {
+    localforage.config(Object.assign(options, { driver }));
+}
 
 
 const clear = localforage.clear;
@@ -22,18 +26,23 @@ const set = (key: string, value: any): void => {
     localforage.setItem(key, value);
 };
 
-
-const useIndexedDB = (options?: { description?: string, name?: string, storeName?: string, version?: number }): void => {
-    localforage.config(Object.assign(config, options, { driver: localforage.INDEXEDDB }));
+const useIndexedDB = (options?: options): void => {
+    driver = localforage.INDEXEDDB;
+    init(options);
 };
 
-const useLocalStorage = (options?: { description?: string, name?: string }): void => {
-    localforage.config(Object.assign(config, options, { driver: localforage.LOCALSTORAGE }));
+const useLocalStorage = (options?: options): void => {
+    driver = localforage.LOCALSTORAGE;
+    init(options);
+};
+
+const useOptions = (options?: options): void => {
+    init(options);
 };
 
 
-// Default to localStorage
-useLocalStorage();
+// Initialize using localstorage as default storage
+init();
 
 
-export default { clear, delete: del, get, set, useIndexedDB, useLocalStorage };
+export default { clear, delete: del, get, set, useIndexedDB, useLocalStorage, useOptions };

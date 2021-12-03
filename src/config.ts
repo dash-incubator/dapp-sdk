@@ -33,11 +33,13 @@ const set = (key: string, value: any): void => {
     local.set(bucket, data);
 };
 
+const useOptions = local.useOptions;
 
-// Sync `data` with localstorage
+
+// Sync `data` with local storage
 (async () => {
     data = (await local.get(bucket)) || {};
 })();
 
 
-export default { clear, get, has, set };
+export default { clear, get, has, set, useOptions };

@@ -7,7 +7,7 @@ const del = async (client, documents, identityId) => {
     const identity = await platform.identities.get(identityId);
 
     return platform.documents.broadcast({ delete: documents }, identity)
-        .then((d) => JSON.parse(d))
+        .then((d) => d.toJSON())
         .catch((e) => console.error('Something went wrong:\n', e));
 };
 

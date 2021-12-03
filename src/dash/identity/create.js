@@ -6,7 +6,7 @@ const create = async (client) => {
 
     if (!identity) {
         identity = await client.platform.identities.register()
-            .then((d) => JSON.parse(d))
+            .then((d) => d.toJSON())
             .catch((e) => console.error('Something went wrong:\n', e));
         identity = (identity || {}).id;
     }

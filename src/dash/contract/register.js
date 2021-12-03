@@ -6,7 +6,7 @@ const register = async (client, contractDefinitions, identityId) => {
 
     if (result.isValid()) {
         return platform.contracts.broadcast(contract, identity)
-            .then((d) => JSON.parse(d).dataContract)
+            .then((d) => d.toJSON().dataContract)
             .catch((e) => console.error('Something went wrong:\n', e));
     }
 

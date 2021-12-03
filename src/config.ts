@@ -2,17 +2,12 @@ import dot from '@esportsplus/dot';
 import { local } from './storage';
 
 
-let data: object = {},
-    key: string = 'config';
-
-
-(async () => {
-    data = await local.get(key);
-})();
+let bucket: string = 'config',
+    data: object = {};
 
 
 const clear = () => {
-    local.delete(key);
+    local.delete(bucket);
 };
 
 const get = async (key: string, value: any = null): Promise<any> => {
@@ -35,8 +30,14 @@ const has = (key: string) => {
 
 const set = (key: string, value: any): void => {
     dot.set(data, key, value);
-    local.set(key, data);
+    local.set(bucket, data);
 };
+
+
+// Sync `data` with localstorage
+(async () => {
+    data = (await local.get(bucket)) || {};
+})();
 
 
 export default { clear, get, has, set };

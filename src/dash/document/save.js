@@ -70,7 +70,7 @@ const save = async (client, documents, identityId, locator) => {
     }
 
     return platform.documents.broadcast(batch, identity)
-        .then((d) => JSON.parse(d))
+        .then((d) => d.toJSON())
         .catch((e) => console.error('Something went wrong:\n', e));
 };
 

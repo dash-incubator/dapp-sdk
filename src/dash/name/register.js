@@ -7,7 +7,7 @@ const register = async (client, identityId, name) => {
             { dashUniqueIdentityId: identity.getId() },
             identity,
         )
-        .then((d) => JSON.parse(d).label)
+        .then((d) => d.toJSON().label)
         .catch((e) => console.error('Something went wrong:\n', e));
 };
 

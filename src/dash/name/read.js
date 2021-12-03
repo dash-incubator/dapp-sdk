@@ -4,7 +4,7 @@ const read = async (client, name) => {
             let names = [];
 
             for (let i = 0, n = d.length; i < n; i++) {
-                names.push(JSON.parse(d[i]));
+                names.push(d[i].toJSON());
             }
 
             return names;

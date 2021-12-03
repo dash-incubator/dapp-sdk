@@ -19,9 +19,12 @@ const connect = (options = {}) => {
             '34.211.244.117:3000'
         ];
         options.network = 'testnet';
-        options.wallet.unsafeOptions = {
-            skipSynchronizationBeforeHeight: 506776
-        };
+
+        if (options.wallet.mnemonic || '') {
+            options.wallet.unsafeOptions = {
+                skipSynchronizationBeforeHeight: 506776
+            };
+        }
     }
 
     return new Dash.Client(options);

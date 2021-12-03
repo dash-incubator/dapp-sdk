@@ -4,3 +4,4 @@ import user from './user';
 
 
 export default { config, storage, user };
+export { config, storage, user };

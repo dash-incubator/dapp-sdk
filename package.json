@@ -2,8 +2,8 @@
     "author": "ICJR",
     "dependencies": {
         "@esportsplus/dot": "^0.0.3",
-        "dash": "^3.21.5",
-        "ipfs-core": "^0.12.2",
+        "dash": "*",
+        "ipfs-core": "*",
         "localforage": "^1.10.0"
     },
     "description": "Dash Dapp SDK",

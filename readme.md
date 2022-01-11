@@ -11,7 +11,7 @@ As of 8/27/2021 this package does not include an extension. An extension or PWA 
 Current usage of this package requires initialization of the Dash Client. This would not be required once the extension/PWA is complete.
 
 ```
-import { config, user } from 'dapp';
+import { config, user } from '@dash-incubator/dapp-sdk';
 
 const init = async () => {
     config.useLocalStorage();

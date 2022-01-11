@@ -22,7 +22,7 @@ const connect = (options = {}) => {
 
         if (options.wallet.mnemonic || '') {
             options.wallet.unsafeOptions = {
-                skipSynchronizationBeforeHeight: 506776
+                skipSynchronizationBeforeHeight: 642500
             };
         }
     }

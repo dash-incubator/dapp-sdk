@@ -15,7 +15,7 @@ const apps = {
             let contract: { [key: string]: any } = register();
 
             if (Object.keys(contract).length < 2) {
-                contract = await client.platform.contracts.get(contract['$id']);
+                contract = await dash.contract.read(client, contract['$id']);
             }
 
             client.getApps().set(app, {

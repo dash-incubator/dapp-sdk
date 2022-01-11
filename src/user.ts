@@ -10,9 +10,9 @@ const apps = {
     all: async () => {
         return await config.get('apps', {});
     },
-    get: async (app: string, register: () => { [key: string]: any }) => {
+    get: async (app: string, register: () => Promise<{ [key: string]: any }>) => {
         return await config.get(`apps.${app}.contractId`, async () => {
-            let contract: { [key: string]: any } = register();
+            let contract: { [key: string]: any } = await register();
 
             if (Object.keys(contract).length < 2) {
                 contract = await dash.contract.read(client, contract['$id']);

@@ -10,11 +10,21 @@ const apps = {
     all: async () => {
         return await config.get('apps', {});
     },
-    get: async (app: string, fallback: () => void) => {
-        return await config.get(`apps.${app}.contractId`, fallback);
-    },
-    set: (app: string, contract: string) => {
-        config.set(`apps.${app}.contractId`, contract);
+    get: async (app: string, register: () => { [key: string]: any }) => {
+        return await config.get(`apps.${app}.contractId`, async () => {
+            let contract: { [key: string]: any } = register();
+
+            if (Object.keys(contract).length < 2) {
+                contract = await client.platform.contracts.get(contract['$id']);
+            }
+
+            client.getApps().set(app, {
+                contract: contract,
+                contractId: contract['$id']
+            });
+
+            return contract['$id'];
+        });
     }
 };
 
@@ -127,4 +137,4 @@ const wallet = {
 };
 
 
-export default { apps, connect, contract, disconnect, document, identity, init, message, name, wallet };
+export default { apps: { get: apps.get }, connect, contract, disconnect, document, identity, init, message, name, wallet };

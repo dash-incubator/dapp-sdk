@@ -1,4 +1,4 @@
-import type { Client, Document, Identity, Response } from '@src/dash/types';
+import type { Client, Document, Identity, Response } from '@dash/types';
 
 
 const del = async ({ platform }: Client, documents: Document[], identity: Identity): Promise<Document[]> => {

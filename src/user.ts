@@ -1,4 +1,4 @@
-import type { Client, Document, Identity, Object } from './dash/types';
+import type { Client, Document, Identity, Object } from '@dash/types';
 import config from './config';
 import dash from './dash';
 
@@ -47,17 +47,17 @@ const connect = async (options: Object = {}): Promise<void> => {
 };
 
 const contract = {
-    register: async (definitions: object): Promise<string> => {
+    register: async (definitions: Object): Promise<string> => {
         return await dash.contract.register(client, definitions, (await identity.session()));
     }
 };
 
 const data = {
-    decrypt: async (message: any): Promise<string> => {
-        return await dash.data.decrypt(client, message);
+    decrypt: async (data: any, secret?: string): Promise<string> => {
+        return await dash.data.decrypt(client, data, secret);
     },
-    encrypt: async (message: any): Promise<string> => {
-        return await dash.data.encrypt(client, message);
+    encrypt: async (data: any, secret?: string): Promise<string> => {
+        return await dash.data.encrypt(client, data, secret);
     }
 };
 
@@ -89,13 +89,15 @@ const document = {
             });
     },
     // `transitions` returns saved document data with '$id'
-    save: async (documents: Document[] | Object, locator: string) => {
-        return (await dash.document.save(client, Array.isArray(documents) ? documents : [documents], (await identity.session()), locator)).transitions || [];
+    save: async (documents: Document[] | Document, locator: string) => {
+        return (
+            await dash.document.save(client, documents, (await identity.session()), locator)
+        ).transitions || [];
     }
 };
 
 const identity = {
-    get: async () => {
+    get: async (): Promise<string> => {
         let id: string = await config.get('identity', async () => {
                 return await dash.identity.create(client);
             });
@@ -110,7 +112,7 @@ const identity = {
 
         return id;
     },
-    session: async () => {
+    session: async (): Promise<Identity> => {
         if (!session.identity.id) {
             await identity.get();
         }

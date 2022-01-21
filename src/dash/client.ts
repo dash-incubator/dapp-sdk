@@ -1,4 +1,4 @@
-import type { Client, Object } from '@src/dash/types';
+import type { Client, Object } from '@dash/types';
 import Dash from 'dash';
 
 

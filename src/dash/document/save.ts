@@ -1,8 +1,7 @@
-import type { Client, Identity, Object, Response } from '@src/dash/types';
+import type { Client, Document, Identity, Object, Response } from '@dash/types';
 
 
-// TODO: Replace 'any' with 'Client' from 'dash' NPM package
-const save = async ({ platform }: Client, documents: Object[], identity: Identity, locator: string): Promise<Object> => {
+const save = async ({ platform }: Client, documents: Document[] | Document, identity: Identity, locator: string): Promise<Object> => {
     if (documents && !Array.isArray(documents)) {
         documents = [documents];
     }
@@ -16,7 +15,7 @@ const save = async ({ platform }: Client, documents: Object[], identity: Identit
             replace: [],
             replaceable: {}
         },
-        ids: string[] = documents.map((d: Object) => (d['$id'] || '').toString()).filter(value => value),
+        ids: string[] = documents.map((data: Object) => (data['$id'] || '').toString()).filter((value: any) => value),
         results = ids.length ? await platform.documents.get(locator, [
                 ['$ownerId', '==', identity.id.toString()],
                 ['$id', 'in', ids]

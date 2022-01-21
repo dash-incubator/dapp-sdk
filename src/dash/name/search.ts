@@ -1,4 +1,4 @@
-import type { Client, Object, Response } from '@src/dash/types';
+import type { Client, Object, Response } from '@dash/types';
 
 
 const search = async ({ platform }: Client, name: string): Promise<Object[]> => {

@@ -7,6 +7,7 @@ let bucket: string = 'config',
 
 
 const clear = () => {
+    data = {};
     local.delete(bucket);
 };
 

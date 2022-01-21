@@ -1,4 +1,4 @@
-import type { Client } from '@src/dash/types';
+import type { Client } from '@dash/types';
 
 
 const encrypt = async ({ account, wallet }: Client, data: any, secret?: string): Promise<string> => {

@@ -15,7 +15,7 @@ const apps = {
     },
     get: async (app: string, register: () => Promise<Object>): Promise<string> => {
         return await config.get(`apps.${app}.contractId`, async () => {
-            let contract: { [key: string]: any } = await register();
+            let contract: Object = await register();
 
             if (Object.keys(contract).length < 2) {
                 contract = await dash.contract.get(client, contract['$id']);
@@ -73,7 +73,7 @@ const disconnect = (): void => {
 };
 
 const document = {
-    delete: async (ids: string[], locator: string) => {
+    delete: async (ids: string[], locator: string): Promise<Document[]> => {
         return await dash.document.delete(client, await dash.document.get(client, locator, {
             where: [
                 ['$id', 'in', ids],
@@ -82,14 +82,14 @@ const document = {
         }), (await identity.session()));
     },
     // Documents can return additional '$' prefixed keys in 'data' value
-    get: async (locator: string, query: Object) => {
+    get: async (locator: string, query: Object): Promise<Document[]> => {
         return (await dash.document.get(client, locator, query))
             .map(async (doc: Object) => {
                 return Object.assign(doc.data || {}, { '$id': (doc.id || '').toString() });
             });
     },
     // `transitions` returns saved document data with '$id'
-    save: async (documents: Document[] | Document, locator: string) => {
+    save: async (documents: Document[] | Document, locator: string): Promise<Document[]> => {
         return (
             await dash.document.save(client, documents, (await identity.session()), locator)
         ).transitions || [];
@@ -123,7 +123,7 @@ const identity = {
 
 const init = async (options: Object = {}): Promise<boolean> => {
     if (!client) {
-        if (!options.wallet.mnemonic || '') {
+        if (!(options.wallet.mnemonic || '')) {
             let mnemonic = await config.get('mnemonic', false);
 
             if (mnemonic) {
@@ -152,4 +152,4 @@ const name = {
 
 
 
-export default Object.freeze({ apps: { get: apps.get }, connect, contract, data, disconnect, document, identity: { get: identity.get }, init, name });
+export default Object.freeze({ apps: { get: apps.get }, contract, data, disconnect, document, identity: { get: identity.get }, init, name });

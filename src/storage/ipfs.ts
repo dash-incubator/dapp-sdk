@@ -18,7 +18,7 @@ async function connect(): Promise<void> {
 
 
 const upload = {
-    files: async (files: { content: string, path: string }): Promise<string> => {
+    files: async (files: { content: string, path: string }[]): Promise<string> => {
         let options = {
                 pin: true,
                 wrapWithDirectory: true

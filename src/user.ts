@@ -17,12 +17,8 @@ const apps = {
         return await config.get(`apps.${app}.contractId`, async () => {
             let contract: Object = await register();
 
-            if (Object.keys(contract).length < 2) {
-                contract = await dash.contract.get(client, contract['$id']);
-            }
-
             client.getApps().set(app, {
-                contract: contract,
+                contract: contract.documents ? contract : await dash.contract.get(client, contract['$id']),
                 contractId: contract['$id']
             });
 
@@ -36,19 +32,16 @@ const connect = async (options: Object = {}): Promise<void> => {
         disconnect();
     }
 
-    client = dash.client.connect(Object.assign(options || {
-        wallet: {
-            mnemonic: null,
-            offlineMode: true
-        }
-    }, { apps: await apps.all() }));
-
+    client = dash.client.connect(Object.assign(options, {
+        apps: await apps.all(),
+        wallet: options.wallet || { mnemonic: await config.get('mnemonic', false) || null }
+    }));
     config.set('mnemonic', client.wallet.exportWallet());
 };
 
 const contract = {
     register: async (definitions: Object): Promise<string> => {
-        return await dash.contract.register(client, definitions, (await identity.session()));
+        return await dash.contract.register(client, definitions, await identity.session());
     }
 };
 
@@ -79,7 +72,7 @@ const document = {
                 ['$id', 'in', ids],
                 ['$ownerId', '==', await identity.get()]
             ]
-        }), (await identity.session()));
+        }), await identity.session());
     },
     // Documents can return additional '$' prefixed keys in 'data' value
     get: async (locator: string, query: Object): Promise<Document[]> => {
@@ -91,26 +84,20 @@ const document = {
     // `transitions` returns saved document data with '$id'
     save: async (documents: Document[] | Document, locator: string): Promise<Document[]> => {
         return (
-            await dash.document.save(client, documents, (await identity.session()), locator)
+            await dash.document.save(client, documents, await identity.session(), locator)
         ).transitions || [];
     }
 };
 
 const identity = {
     get: async (): Promise<string> => {
-        let id: string = await config.get('identity', async () => {
-                return await dash.identity.create(client);
-            });
-
-        if (id && id !== session.identity.id) {
-            session.identity = await dash.identity.get(client, id) as Identity;
-        }
-
         if (!session.identity.id) {
-            config.delete('identity');
+            session.identity = await dash.identity.get(client, await config.get('identity', async () => {
+                return await dash.identity.create(client);
+            })) as Identity;
         }
 
-        return id;
+        return session.identity.id;
     },
     session: async (): Promise<Identity> => {
         if (!session.identity.id) {
@@ -123,27 +110,15 @@ const identity = {
 
 const init = async (options: Object = {}): Promise<boolean> => {
     if (!client) {
-        if (!(options.wallet.mnemonic || '')) {
-            let mnemonic = await config.get('mnemonic', false);
-
-            if (mnemonic) {
-                options.wallet = { mnemonic };
-            }
-        }
-
         await connect(options);
     }
 
-    if (client.account.getConfirmedBalance() > 0 && (await identity.get())) {
-        return true;
-    }
-
-    return false;
+    return client.account.getConfirmedBalance() > 0 && await identity.get() !== '';
 };
 
 const name = {
     register: async (name: string): Promise<Object> => {
-        return await dash.name.register(client, (await identity.session()), name);
+        return await dash.name.register(client, await identity.session(), name);
     },
     search: async (name: string): Promise<Object[]> => {
         return await dash.name.search(client, name);

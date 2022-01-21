@@ -10,6 +10,10 @@ const clear = () => {
     local.delete(bucket);
 };
 
+const del = (key: string): void => {
+    set(key, undefined);
+};
+
 const get = async (key: string, value: any = null): Promise<any> => {
     if (!has(key) && typeof value === 'function') {
         set(key, await value());
@@ -42,4 +46,4 @@ const useOptions = local.useOptions;
 })();
 
 
-export default { clear, get, has, set, useOptions };
+export default { clear, delete: del, get, has, set, useOptions };

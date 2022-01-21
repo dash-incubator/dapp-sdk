@@ -1,10 +1,11 @@
+import type { Client, Object } from '@src/dash/types';
 import Dash from 'dash';
 
 
 let testnet = true;
 
 
-const connect = (options = {}) => {
+const connect = (options: Object = {}): Client => {
     options.network = 'mainnet';
     options.wallet = options.wallet || {};
 
@@ -27,6 +28,8 @@ const connect = (options = {}) => {
         }
     }
 
+    // TODO: Remove once types are fixed in Dash package
+    // @ts-ignore
     return new Dash.Client(options);
 };
 

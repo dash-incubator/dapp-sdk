@@ -19,6 +19,9 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "outDir": "./build",
+        "paths": {
+            "@src/*": ["*"]
+        },
         "removeComments": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
@@ -28,7 +31,7 @@
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
-        "target": "esnext",
+        "target": "esnext"
     },
     "include": ["src"],
     "typeRoots": ["node_modules/@types"]

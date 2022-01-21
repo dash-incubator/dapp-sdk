@@ -1,21 +1,24 @@
+import type { Client, Document, Identity, Object } from './dash/types';
 import config from './config';
 import dash from './dash';
 
 
-// TODO: Replace once Dash type declarations are fixed
-let client: any;
+let client: Client,
+    session: { identity: Identity } = {
+        identity: { id: '' }
+    };
 
 
 const apps = {
-    all: async () => {
+    all: async (): Promise<Object> => {
         return await config.get('apps', {});
     },
-    get: async (app: string, register: () => Promise<{ [key: string]: any }>) => {
+    get: async (app: string, register: () => Promise<Object>): Promise<string> => {
         return await config.get(`apps.${app}.contractId`, async () => {
             let contract: { [key: string]: any } = await register();
 
             if (Object.keys(contract).length < 2) {
-                contract = await dash.contract.read(client, contract['$id']);
+                contract = await dash.contract.get(client, contract['$id']);
             }
 
             client.getApps().set(app, {
@@ -28,113 +31,123 @@ const apps = {
     }
 };
 
-const connect = async (options: object = {}) => {
+const connect = async (options: Object = {}): Promise<void> => {
     if (client) {
         disconnect();
     }
 
-    if (!options) {
-        options = {
-            wallet: {
-                mnemonic: null,
-                offlineMode: true
-            }
-        };
-    }
+    client = dash.client.connect(Object.assign(options || {
+        wallet: {
+            mnemonic: null,
+            offlineMode: true
+        }
+    }, { apps: await apps.all() }));
 
-    client = dash.client.connect(Object.assign(options, { apps: await apps.all() }));
+    config.set('mnemonic', client.wallet.exportWallet());
 };
 
 const contract = {
-    register: async (contractDefinitions: object) => {
-        return await dash.contract.register(client, contractDefinitions, await identity.get());
+    register: async (definitions: object): Promise<string> => {
+        return await dash.contract.register(client, definitions, (await identity.session()));
     }
 };
 
-const disconnect = () => {
-    if (!client) {
-        return;
+const data = {
+    decrypt: async (message: any): Promise<string> => {
+        return await dash.data.decrypt(client, message);
+    },
+    encrypt: async (message: any): Promise<string> => {
+        return await dash.data.encrypt(client, message);
+    }
+};
+
+const disconnect = (): void => {
+    if (client) {
+        client.disconnect();
     }
 
-    client.disconnect();
-    client = null;
-
     config.clear();
+    session = {
+        identity: { id: '' }
+    };
 };
 
 const document = {
-    delete: async (documents: [] | object) => {
-        return await dash.document.delete(client, documents, await identity.get());
+    delete: async (ids: string[], locator: string) => {
+        return await dash.document.delete(client, await dash.document.get(client, locator, {
+            where: [
+                ['$id', 'in', ids],
+                ['$ownerId', '==', await identity.get()]
+            ]
+        }), (await identity.session()));
     },
-    read: async (locator: string, query: object) => {
-        return await dash.document.read(client, locator, query);
+    // Documents can return additional '$' prefixed keys in 'data' value
+    get: async (locator: string, query: Object) => {
+        return (await dash.document.get(client, locator, query))
+            .map(async (doc: Object) => {
+                return Object.assign(doc.data || {}, { '$id': (doc.id || '').toString() });
+            });
     },
-    save: async (documents: [] | object, locator: string) => {
-        return await dash.document.save(client, documents, await identity.get(), locator);
+    // `transitions` returns saved document data with '$id'
+    save: async (documents: Document[] | Object, locator: string) => {
+        return (await dash.document.save(client, Array.isArray(documents) ? documents : [documents], (await identity.session()), locator)).transitions || [];
     }
 };
 
 const identity = {
     get: async () => {
-        return await config.get('identity', async () => {
-            let data = await wallet.read();
-
-            if (data.balance.confirmed > 0) {
+        let id: string = await config.get('identity', async () => {
                 return await dash.identity.create(client);
-            }
+            });
 
-            return false;
-        });
+        if (id && id !== session.identity.id) {
+            session.identity = await dash.identity.get(client, id) as Identity;
+        }
+
+        if (!session.identity.id) {
+            config.delete('identity');
+        }
+
+        return id;
+    },
+    session: async () => {
+        if (!session.identity.id) {
+            await identity.get();
+        }
+
+        return session.identity;
     }
 };
 
-const init = async (reconnect = false) => {
-    let options;
-
-    if (reconnect) {
-        client = null;
-    }
-
+const init = async (options: Object = {}): Promise<boolean> => {
     if (!client) {
-        let mnemonic = await config.get('mnemonic', false);
+        if (!options.wallet.mnemonic || '') {
+            let mnemonic = await config.get('mnemonic', false);
 
-        if (mnemonic) {
-            options = {
-                wallet: { mnemonic }
+            if (mnemonic) {
+                options.wallet = { mnemonic };
             }
         }
 
         await connect(options);
-
-        if (!mnemonic) {
-            config.set('mnemonic', (await dash.wallet.read(client)).mnemonic);
-        }
     }
-};
 
-const message = {
-    decrypt: async (message: any) => {
-        return await dash.message.decrypt(client, message);
-    },
-    encrypt: async (message: any) => {
-        return await dash.message.encrypt(client, message);
+    if (client.account.getConfirmedBalance() > 0 && (await identity.get())) {
+        return true;
     }
+
+    return false;
 };
 
 const name = {
-    read: async (name: string) => {
-        return await dash.name.read(client, name);
+    register: async (name: string): Promise<Object> => {
+        return await dash.name.register(client, (await identity.session()), name);
     },
-    register: async (name: string) => {
-        return await dash.name.register(client, await identity.get(), name);
-    }
-};
-
-const wallet = {
-    read: async () => {
-        return await dash.wallet.read(client);
+    search: async (name: string): Promise<Object[]> => {
+        return await dash.name.search(client, name);
     }
 };
 
 
-export default { apps: { get: apps.get }, connect, contract, disconnect, document, identity, init, message, name, wallet };
+
+export default Object.freeze({ apps: { get: apps.get }, connect, contract, data, disconnect, document, identity: { get: identity.get }, init, name });

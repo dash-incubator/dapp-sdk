@@ -1,10 +1,9 @@
 import client from './client';
 import contract from './contract';
+import data from './data';
 import document from './document';
 import identity from './identity';
-import message from './message';
 import name from './name';
-import wallet from './wallet';
 
 
-export default { client, contract, document, identity, message, name, wallet };
+export default { client, contract, data, document, identity, name };

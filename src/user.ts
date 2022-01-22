@@ -51,6 +51,16 @@ const data = {
     },
     encrypt: async (data: any, secret?: string): Promise<string> => {
         return await dash.data.encrypt(client, data, secret);
+    },
+    process: async (data: any, { decrypt, encrypt, secret }: { decrypt?: boolean, encrypt?: boolean, secret?: string }): Promise<any> => {
+        if (decrypt) {
+            data = await data.decrypt(data, secret);
+        }
+        else if (encrypt) {
+            data = await data.encrypt(data, secret);
+        }
+
+        return data;
     }
 };
 

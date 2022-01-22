@@ -23,10 +23,6 @@ async function connect(): Promise<void> {
     node = await IPFS.create();
 };
 
-async function encrypt(data: string, { encrypt, secret }: Options = {}): Promise<string> {
-    return encrypt ? await user.data.encrypt(data, secret) : data;
-};
-
 
 const upload = {
     files: async (files: { content: string, path: string }[], options: Options = {}): Promise<string> => {
@@ -36,7 +32,7 @@ const upload = {
 
         files.map(async (file) => {
             return {
-                content: await encrypt(file.content, options),
+                content: await user.data.process(file.content, options),
                 path: file.path
             }
         });
@@ -49,7 +45,7 @@ const upload = {
                 continue;
             }
 
-            root = await encrypt(file.cid.toString(), options);
+            root = await user.data.process(file.cid.toString(), options);
         }
 
         return root;
@@ -57,8 +53,8 @@ const upload = {
     file: async (content: string, options: Options = {}): Promise<string> => {
         await connect();
 
-        return await encrypt(
-            (await node.add(await encrypt(content, options))).cid.toString(),
+        return await user.data.process(
+            (await node.add(await user.data.process(content, options))).cid.toString(),
             options
         );
     },

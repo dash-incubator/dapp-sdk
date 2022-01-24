@@ -45,7 +45,7 @@ const upload = {
                 continue;
             }
 
-            root = await user.data.process(file.cid.toString(), options);
+            root = file.cid.toString();
         }
 
         return root;
@@ -53,10 +53,7 @@ const upload = {
     file: async (content: string, options: Options = {}): Promise<string> => {
         await connect();
 
-        return await user.data.process(
-            (await node.add(await user.data.process(content, options))).cid.toString(),
-            options
-        );
+        return (await node.add(await user.data.process(content, options))).cid.toString();
     },
     images: async function(files: File[], options: Options = {}): Promise<string[]> {
         let cids: string[] = [];

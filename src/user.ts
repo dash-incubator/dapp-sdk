@@ -52,29 +52,30 @@ const data = {
     encrypt: async (data: any, secret?: string): Promise<string> => {
         return await dash.data.encrypt(client, data, secret);
     },
-    process: async (data: Object, { decrypt, encrypt, secret, skip }: { decrypt?: boolean, encrypt?: boolean, secret?: string, skip?: any[] } = {}): Promise<any> => {
-        let action = decrypt ? 'decrypt' : (encrypt ? 'encrypt' : '');
-
+    process: async (values: Object, { decrypt, encrypt, secret, skip }: { decrypt?: boolean, encrypt?: boolean, secret?: string, skip?: any[] } = {}): Promise<any> => {
         skip = skip || [];
 
-        if (action) {
-            for (let key in data) {
-                if (!data[key] || skip.includes(key)) {
+        if (decrypt || encrypt) {
+            for (let key in values) {
+                if (!values[key] || skip.includes(key)) {
                     continue;
                 }
 
-                if (Array.isArray(data[key])) {
-                    for (let i = 0, n = data[key].length; i < n; i++) {
-                        data[key][i] = await data.message[action](data[key][i], secret);
+                if (Array.isArray(values[key])) {
+                    for (let i = 0, n = values[key].length; i < n; i++) {
+                        values[key][i] = await data[decrypt ? 'decrypt' : 'encrypt'](values[key][i], secret);
                     }
                 }
+                else if (values[key].constructor.name === 'Object') {
+                    values[key] = await data.process(values, { decrypt, encrypt, secret });
+                }
                 else {
-                    data[key] = await data.message[action](data[key], secret);
+                    values[key] = await data[decrypt ? 'decrypt' : 'encrypt'](values[key], secret);
                 }
             }
         }
 
-        return data;
+        return values;
     }
 };
 

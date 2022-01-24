@@ -32,7 +32,7 @@ const upload = {
 
         files.map(async (file) => {
             return {
-                content: await user.data.process(file.content, options),
+                content: (await user.data.process({ content: file.content }, options)).content,
                 path: file.path
             }
         });
@@ -53,7 +53,7 @@ const upload = {
     file: async (content: string, options: Options = {}): Promise<string> => {
         await connect();
 
-        return (await node.add(await user.data.process(content, options))).cid.toString();
+        return (await node.add( (await user.data.process({ content }, options)).content )).cid.toString();
     },
     images: async function(files: File[], options: Options = {}): Promise<string[]> {
         let cids: string[] = [];

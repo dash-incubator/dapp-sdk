@@ -52,12 +52,26 @@ const data = {
     encrypt: async (data: any, secret?: string): Promise<string> => {
         return await dash.data.encrypt(client, data, secret);
     },
-    process: async (data: any, { decrypt, encrypt, secret }: { decrypt?: boolean, encrypt?: boolean, secret?: string }): Promise<any> => {
-        if (decrypt) {
-            data = await data.decrypt(data, secret);
-        }
-        else if (encrypt) {
-            data = await data.encrypt(data, secret);
+    process: async (data: Object, { decrypt, encrypt, secret, skip }: { decrypt?: boolean, encrypt?: boolean, secret?: string, skip?: any[] } = {}): Promise<any> => {
+        let action = decrypt ? 'decrypt' : (encrypt ? 'encrypt' : '');
+
+        skip = skip || [];
+
+        if (action) {
+            for (let key in data) {
+                if (!data[key] || skip.includes(key)) {
+                    continue;
+                }
+
+                if (Array.isArray(data[key])) {
+                    for (let i = 0, n = data[key].length; i < n; i++) {
+                        data[key][i] = await data.message[action](data[key][i], secret);
+                    }
+                }
+                else {
+                    data[key] = await data.message[action](data[key], secret);
+                }
+            }
         }
 
         return data;

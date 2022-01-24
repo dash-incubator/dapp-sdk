@@ -57,7 +57,7 @@ const data = {
 
         if (decrypt || encrypt) {
             for (let key in values) {
-                if (!values[key] || skip.includes(key)) {
+                if (key.startsWith('$') || skip.includes(key)) {
                     continue;
                 }
 

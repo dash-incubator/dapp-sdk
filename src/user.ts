@@ -1,6 +1,7 @@
 import type { Client, Document, Entity, Identity, Object } from '@dash/types';
 import config from './config';
 import dash from './dash';
+import dot from '@esportsplus/dot';
 
 
 let client: Client,
@@ -65,6 +66,9 @@ const data = {
                     skip
                 });
                 entity.encrypted = false;
+            },
+            delete: (key: string): void => {
+                dot.set(entity.data, key, undefined);
             },
             encrypted: false,
             encrypt: async (secret?: string): Promise<void> => {

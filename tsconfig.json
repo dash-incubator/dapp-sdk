@@ -35,6 +35,6 @@
         "target": "esnext"
     },
     "exclude": ["node_modules"],
-    "include": ["./build", "./src"],
+    "include": ["./src"],
     "typeRoots": ["node_modules/@types"]
 }

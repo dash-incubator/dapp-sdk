@@ -1,4 +1,4 @@
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const glob = require('glob');
 const webpack = require('webpack');

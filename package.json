@@ -7,7 +7,7 @@
         "ipfs-core": "*",
         "localforage": "^1.10.0"
     },
-    "description": "Dash Dapp SDK",
+    "description": "Dash dApp SDK",
     "devDependencies": {
         "bignumber.js": "^9.0.1",
         "glob": "^7.1.7",

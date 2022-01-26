@@ -1,7 +1,6 @@
-import type { Client, Document, Entity, Identity, Object } from '@dash/types';
+import type { Client, Document, Identity, Object } from '@dash/types';
 import config from './config';
 import dash from './dash';
-import dot from '@esportsplus/dot';
 
 
 let client: Client,
@@ -52,39 +51,6 @@ const data = {
     },
     encrypt: async (data: any, secret?: string): Promise<string> => {
         return await dash.data.encrypt(client, data, secret);
-    },
-    entity: (skip: string[] = []): Entity => {
-        let entity: Entity = {
-            data: {},
-            decrypt: async (secret?: string): Promise<void> => {
-                if (!entity.encrypted) {
-                    return;
-                }
-
-                entity.data = await data.recursive.decrypt(entity.data, {
-                    secret: secret || (entity.data.secret ? await data.decrypt(entity.data.secret) : ''),
-                    skip
-                });
-                entity.encrypted = false;
-            },
-            delete: (key: string): void => {
-                dot.set(entity.data, key, undefined);
-            },
-            encrypted: false,
-            encrypt: async (secret?: string): Promise<void> => {
-                if (entity.encrypted) {
-                    return;
-                }
-
-                entity.data = await data.recursive.encrypt(entity.data, {
-                    secret: secret || (entity.data.secret || ''),
-                    skip
-                });
-                entity.encrypted = true;
-            }
-        };
-
-        return entity;
     },
     recursive: {
         decrypt: async (data: Object, options: { secret?: string, skip?: any[] } = {}): Promise<any> => {

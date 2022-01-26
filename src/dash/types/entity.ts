@@ -4,6 +4,7 @@ type Entity = {
     delete: (key: string) => void;
     encrypted: boolean;
     encrypt: (secret?: string) => Promise<void>;
+    update: (data: { [key: string]: any }) => Promise<void>;
 };
 
 

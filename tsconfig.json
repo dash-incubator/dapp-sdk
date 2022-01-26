@@ -3,7 +3,7 @@
         "allowJs": true,
         "allowUmdGlobalAccess": true,
         "alwaysStrict": true,
-        "baseUrl": "src",
+        "baseUrl": "./src",
         "declaration": true,
         "declarationDir": "./build",
         "esModuleInterop": true,

@@ -1,4 +1,4 @@
-import type { Client, Document, Identity, Object } from '@dash/types';
+import type { Client, Document, Entity, Identity, Object } from '@dash/types';
 import config from './config';
 import dash from './dash';
 
@@ -52,30 +52,43 @@ const data = {
     encrypt: async (data: any, secret?: string): Promise<string> => {
         return await dash.data.encrypt(client, data, secret);
     },
-    process: async (values: Object, { decrypt, encrypt, secret, skip }: { decrypt?: boolean, encrypt?: boolean, secret?: string, skip?: any[] } = {}): Promise<any> => {
-        skip = skip || [];
-
-        if (decrypt || encrypt) {
-            for (let key in values) {
-                if (key.startsWith('$') || skip.includes(key)) {
-                    continue;
+    entity: (skip: string[] = []): Entity => {
+        let entity: Entity = {
+            data: {},
+            decrypt: async (secret?: string): Promise<void> => {
+                if (!entity.encrypted) {
+                    return;
                 }
 
-                if (Array.isArray(values[key])) {
-                    for (let i = 0, n = values[key].length; i < n; i++) {
-                        values[key][i] = await data[decrypt ? 'decrypt' : 'encrypt'](values[key][i], secret);
-                    }
+                entity.data = await data.recursive.decrypt(entity.data, {
+                    secret: secret || (entity.data.secret ? await data.decrypt(entity.data.secret) : ''),
+                    skip
+                });
+                entity.encrypted = false;
+            },
+            encrypted: false,
+            encrypt: async (secret?: string): Promise<void> => {
+                if (entity.encrypted) {
+                    return;
                 }
-                else if (values[key].constructor.name === 'Object') {
-                    values[key] = await data.process(values, { decrypt, encrypt, secret });
-                }
-                else {
-                    values[key] = await data[decrypt ? 'decrypt' : 'encrypt'](values[key], secret);
-                }
+
+                entity.data = await data.recursive.encrypt(entity.data, {
+                    secret: secret || (entity.data.secret || ''),
+                    skip
+                });
+                entity.encrypted = true;
             }
-        }
+        };
 
-        return values;
+        return entity;
+    },
+    recursive: {
+        decrypt: async (data: Object, options: { secret?: string, skip?: any[] } = {}): Promise<any> => {
+            return await dash.data.recursive(client, data, Object.assign(options, { decrypt: true }));
+        },
+        encrypt: async (data: Object, options: { secret?: string, skip?: any[] } = {}): Promise<any> => {
+            return await dash.data.recursive(client, data, Object.assign(options, { encrypt: true }));
+        }
     }
 };
 

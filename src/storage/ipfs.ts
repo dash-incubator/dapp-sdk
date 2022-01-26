@@ -31,8 +31,14 @@ const upload = {
         await connect();
 
         files.map(async (file) => {
+            let content = file.content;
+
+            if (options.encrypt) {
+                content = ( await user.data.recursive.encrypt({ content }, options) ).content;
+            }
+
             return {
-                content: (await user.data.process({ content: file.content }, options)).content,
+                content,
                 path: file.path
             }
         });
@@ -53,7 +59,11 @@ const upload = {
     file: async (content: string, options: Options = {}): Promise<string> => {
         await connect();
 
-        return (await node.add( (await user.data.process({ content }, options)).content )).cid.toString();
+        if (options.encrypt) {
+            content = ( await user.data.recursive.encrypt({ content }, options) ).content;
+        }
+
+        return (await node.add(content)).cid.toString();
     },
     images: async function(files: File[], options: Options = {}): Promise<string[]> {
         let cids: string[] = [];

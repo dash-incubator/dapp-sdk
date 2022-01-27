@@ -130,8 +130,8 @@ const init = async (options: Object = {}): Promise<boolean> => {
     }
 
     session.wallet = {
-        address: client.account.getUnusedAddress().address,
-        balance: client.account.getConfirmedBalance()
+        address: ( await client.account.getUnusedAddress() ).address,
+        balance: await client.account.getConfirmedBalance()
     };
 
     return session.wallet.balance > 0 && await identity.get() !== '';

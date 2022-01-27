@@ -25,45 +25,39 @@ async function connect(): Promise<void> {
 
 
 const upload = {
-    files: async (files: { content: string, path: string }[], options: Options = {}): Promise<string> => {
-        let root: string = '';
+    data: async (data: { content: string, path: string }[] | string, options: Options = {}): Promise<string> => {
+        let cid: string = '';
 
         await connect();
 
-        files.map(async (file) => {
-            let content = file.content;
-
+        if (Array.isArray(data)) {
             if (options.encrypt) {
-                content = ( await user.data.recursive.encrypt({ content }, options) ).content;
+                data = await user.data.recursive.encrypt(data, {
+                    secret: options.secret,
+                    skip: ['path']
+                });
             }
 
-            return {
-                content,
-                path: file.path
-            }
-        });
+            for await (const item of node.addAll(data, {
+                pin: true,
+                wrapWithDirectory: true
+            })) {
+                if (item.path) {
+                    continue;
+                }
 
-        for await (const file of node.addAll(files, {
-            pin: true,
-            wrapWithDirectory: true
-        })) {
-            if (file.path) {
-                continue;
+                cid = item.cid.toString();
+            }
+        }
+        else {
+            if (options.encrypt) {
+                data = await user.data.encrypt(data, options.secret);
             }
 
-            root = file.cid.toString();
+            cid = ( await node.add(data) ).cid.toString();
         }
 
-        return root;
-    },
-    file: async (content: string, options: Options = {}): Promise<string> => {
-        await connect();
-
-        if (options.encrypt) {
-            content = ( await user.data.recursive.encrypt({ content }, options) ).content;
-        }
-
-        return (await node.add(content)).cid.toString();
+        return cid;
     },
     images: async function(files: File[], options: Options = {}): Promise<string[]> {
         let cids: string[] = [];
@@ -79,7 +73,7 @@ const upload = {
                 file = await compressor(file, { useWebWorker: true });
             }
 
-            cids.push( await upload.file(await file.text(), options) );
+            cids.push( await upload.data(await file.text(), options) );
         }
 
         return cids;

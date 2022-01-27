@@ -3,7 +3,7 @@ import dot from '@esportsplus/dot';
 import user from './user';
 
 
-const create = async (data: Object, { skip, update }: { skip: string[], update?: Function[] }): Promise<Entity> => {
+const create = async (data: Object, { skip, update }: { skip: string[], update?: Function }): Promise<Entity> => {
     let entity: Entity = {
         data: {},
         decrypt: async (secret?: string): Promise<void> => {
@@ -36,22 +36,12 @@ const create = async (data: Object, { skip, update }: { skip: string[], update?:
             await entity.decrypt();
 
             if (!update) {
-                update = [
-                    () => {
-                        return Object.assign(entity.data, input);
-                    }
-                ];
+                update = () => {
+                    return Object.assign(entity.data, input);
+                };
             }
 
-            for (let i = 0, n = update.length; i < n; i++) {
-                let fn = update[i];
-
-                if (!fn) {
-                    continue;
-                }
-
-                entity.data = Object.assign(entity.data, ((await fn(entity.data, input)) || {}));
-            }
+            entity.data = await update(entity.data, input);
         }
     };
 

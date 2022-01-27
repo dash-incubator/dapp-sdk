@@ -35,13 +35,7 @@ const create = async (data: Object, { skip, update }: { skip: string[], update?:
         update: async (input: Object): Promise<void> => {
             await entity.decrypt();
 
-            if (!update) {
-                update = () => {
-                    return Object.assign(entity.data, input);
-                };
-            }
-
-            entity.data = await update(entity.data, input);
+            entity.data = update ? (await update(entity.data, input)) : Object.assign(entity.data, input);
         }
     };
 

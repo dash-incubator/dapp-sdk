@@ -4,8 +4,12 @@ import dash from './dash';
 
 
 let client: Client,
-    session: { identity: Identity } = {
-        identity: { id: '' }
+    session: { identity: Identity, wallet: { address: string, balance: number } } = {
+        identity: { id: '' },
+        wallet: {
+            address: '',
+            balance: 0
+        }
     };
 
 
@@ -69,7 +73,11 @@ const disconnect = (): void => {
 
     config.clear();
     session = {
-        identity: { id: '' }
+        identity: { id: '' },
+        wallet: {
+            address: '',
+            balance: 0
+        }
     };
 };
 
@@ -121,7 +129,12 @@ const init = async (options: Object = {}): Promise<boolean> => {
         await connect(options);
     }
 
-    return client.account.getConfirmedBalance() > 0 && await identity.get() !== '';
+    session.wallet = {
+        address: client.account.getUnusedAddress().address,
+        balance: client.account.getConfirmedBalance()
+    };
+
+    return session.wallet.balance > 0 && await identity.get() !== '';
 };
 
 const name = {
@@ -135,4 +148,4 @@ const name = {
 
 
 
-export default { apps: { get: apps.get }, contract, data, disconnect, document, identity: { get: identity.get }, init, name };
+export default { apps: { get: apps.get }, contract, data, disconnect, document, identity: { get: identity.get }, init, name, wallet: session.wallet };

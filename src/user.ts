@@ -133,7 +133,7 @@ const init = async (options: Object = {}): Promise<boolean> => {
 
     session.wallet = {
         address: account.getUnusedAddress().address,
-        balance: account.getConfirmedBalance()
+        balance: await account.getConfirmedBalance()
     };
 
     return session.wallet.balance > 0 && await identity.get() !== '';
@@ -150,4 +150,4 @@ const name = {
 
 
 
-export default { apps: { get: apps.get }, contract, data, disconnect, document, identity: { get: identity.get }, init, name, wallet: session.wallet };
+export default { apps: { get: apps.get }, contract, data, disconnect, document, identity: { get: identity.get }, init, name, session };

@@ -129,9 +129,11 @@ const init = async (options: Object = {}): Promise<boolean> => {
         await connect(options);
     }
 
+    let account = await client.getWalletAccount();
+
     session.wallet = {
-        address: client.account.getUnusedAddress().address,
-        balance: client.account.getConfirmedBalance()
+        address: account.getUnusedAddress().address,
+        balance: account.getConfirmedBalance()
     };
 
     return session.wallet.balance > 0 && await identity.get() !== '';

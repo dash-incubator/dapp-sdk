@@ -1,8 +1,8 @@
 import type { Client, Identity, Object, Response } from '@dash/types';
 
 
-const create = async ({ account, platform }: Client): Promise<Identity['id']> => {
-    let identities: Identity['id'][] = await account.identities.getIdentityIds();
+const create = async ({ getWalletAccount, platform }: Client): Promise<Identity['id']> => {
+    let identities: Identity['id'][] = await (await getWalletAccount()).identities.getIdentityIds();
 
     if (identities[0]) {
         return identities[0];

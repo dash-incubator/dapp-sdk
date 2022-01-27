@@ -25,7 +25,7 @@ async function connect(): Promise<void> {
 
 
 const upload = {
-    data: async (data: { content: string, path: string }[] | string, options: Options = {}): Promise<string> => {
+    data: async (data: { content: string, path: string }[] | File | string, options: Options = {}): Promise<string> => {
         let cid: string = '';
 
         await connect();
@@ -50,6 +50,10 @@ const upload = {
             }
         }
         else {
+            if (data instanceof File) {
+                data = await data.text();
+            }
+
             if (options.encrypt) {
                 data = await user.data.encrypt(data, options.secret);
             }

@@ -135,4 +135,4 @@ const name = {
 
 
 
-export default Object.freeze({ apps: { get: apps.get }, contract, data, disconnect, document, identity: { get: identity.get }, init, name });
+export default { apps: { get: apps.get }, contract, data, disconnect, document, identity: { get: identity.get }, init, name };

@@ -1,5 +1,5 @@
 import type { Client, Object } from '@dash/types';
-import Dash from 'dash';
+import Dash from 'dash-core';
 
 
 let testnet = true;

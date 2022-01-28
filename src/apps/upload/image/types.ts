@@ -1,4 +1,4 @@
-import { Entity as AbstractEntity } from '@src/types';
+import { Entity as AbstractEntity } from '@entity/types';
 
 
 type Document = {

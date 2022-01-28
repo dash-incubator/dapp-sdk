@@ -9,7 +9,7 @@ const del = async ({ platform }: Client, documents: Document[] | Document, ident
         return [];
     }
 
-    return platform.documents.broadcast({ delete: documents }, identity)
+    return await platform.documents.broadcast({ delete: documents }, identity)
         .catch((e: Error) => console.error('Something went wrong:\n', e));
 };
 

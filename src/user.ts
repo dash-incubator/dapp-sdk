@@ -1,5 +1,5 @@
 import type { Client, Contract, Document, Identity, Response } from '@dash/types';
-import type { Object } from '@src/types';
+import type { Object } from './types';
 import config from './config';
 import dash from './dash';
 

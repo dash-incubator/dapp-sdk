@@ -1,18 +1,11 @@
+import { LocalOptions } from './types';
 import localforage from 'localforage';
-
-
-type Options = {
-    description?: string,
-    name?: string,
-    storeName?: string,
-    version?: number
-};
 
 
 let driver: any = localforage.LOCALSTORAGE;
 
 
-function init(options: Options = {}): void {
+function init(options: LocalOptions = {}): void {
     localforage.config(Object.assign({ name: 'dapp' }, options, { driver }));
 }
 
@@ -31,17 +24,17 @@ const set = (key: string, value: any): void => {
     localforage.setItem(key, value);
 };
 
-const useIndexedDB = (options: Options = {}): void => {
+const useIndexedDB = (options: LocalOptions = {}): void => {
     driver = localforage.INDEXEDDB;
     init(options);
 };
 
-const useLocalStorage = (options: Options = {}): void => {
+const useLocalStorage = (options: LocalOptions = {}): void => {
     driver = localforage.LOCALSTORAGE;
     init(options);
 };
 
-const useOptions = (options: Options = {}): void => {
+const useOptions = (options: LocalOptions = {}): void => {
     init(options);
 };
 

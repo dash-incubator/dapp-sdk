@@ -21,6 +21,7 @@
         "outDir": "./build",
         "paths": {
             "@dash/*": ["dash/*"],
+            "@entity/*": ["entity/*"],
             "@src/*": ["*"]
         },
         "removeComments": true,

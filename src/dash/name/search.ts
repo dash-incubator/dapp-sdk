@@ -3,7 +3,7 @@ import type { Object } from '@src/types';
 
 
 const search = async ({ platform }: Client, name: string): Promise<Object[]> => {
-    return platform.names.search(name, 'dash')
+    return await platform.names.search(name, 'dash')
         .then((r: Response[]) => {
             return r.map((d: Response) => d.toJSON());
         })

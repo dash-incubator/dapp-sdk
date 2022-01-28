@@ -10,7 +10,7 @@ const register = async ({ platform }: Client, definition: Object, identity: Iden
         throw result.errors[0];
     }
 
-    return platform.contracts.broadcast(contract, identity)
+    return await platform.contracts.broadcast(contract, identity)
         .catch((e: Error) => console.error('Something went wrong:\n', e));
 };
 

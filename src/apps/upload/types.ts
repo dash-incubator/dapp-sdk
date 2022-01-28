@@ -11,7 +11,9 @@ type Inputs = Audio.Input | Image.Input | Video.Input;
 
 type Entities = Audio.Entity | Image.Entity | Video.Entity;
 
-type Object = { [key: string]: any };
+type Object = {
+    [key: string]: any
+};
 
 
 export { Data, Documents, Inputs, Entities, Object };

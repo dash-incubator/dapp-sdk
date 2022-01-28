@@ -1,13 +1,7 @@
+import { IpfsOptions } from './types';
 import compressor from 'browser-image-compression';
 import user from '@src/user';
 import * as IPFS from 'ipfs-core';
-
-
-type Options = {
-    compress?: boolean,
-    encrypt?: boolean,
-    secret?: string
-};
 
 
 // IPFS Node
@@ -25,7 +19,7 @@ async function connect(): Promise<void> {
 
 
 const upload = {
-    data: async (data: { content: string, path: string }[] | File | string, options: Options = {}): Promise<string> => {
+    data: async (data: { content: string, path: string }[] | File | string, options: IpfsOptions = {}): Promise<string> => {
         let cid: string = '';
 
         await connect();
@@ -63,7 +57,7 @@ const upload = {
 
         return cid;
     },
-    images: async function(files: File[], options: Options = {}): Promise<string[]> {
+    images: async function(files: File[], options: IpfsOptions = {}): Promise<string[]> {
         let cids: string[] = [];
 
         for (let i = 0, n = files.length; i < n; i++) {
@@ -82,7 +76,7 @@ const upload = {
 
         return cids;
     },
-    image: async function(file: File, options: Options = {}): Promise<string> {
+    image: async function(file: File, options: IpfsOptions = {}): Promise<string> {
         return ( await upload.images([file], options) )[0] || '';
     }
 };

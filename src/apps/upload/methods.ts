@@ -1,7 +1,5 @@
-import { Data, Documents, Inputs, Entities, Object } from './types';
-import entity from '@src/entity';
-import storage from '@src/storage';
-import user from '@src/user';
+import { Data, Inputs, Entities, Object } from './types';
+import { entity, storage, user } from '@src/index';
 
 
 function filter(data: Object, { description, encrypt, keywords, name, secret }: Object): Object {
@@ -65,27 +63,26 @@ async function upload(data: Object, { audio, banner, compress, gallery, image, t
 
 
 const factory = (locator: string): Object => {
-    let factory = async (data: Partial<Documents> = { encrypted: false }): Promise<Entities> => {
-            return await entity.factory(data, {
-                skip: ['encrypted'],
-                update: async (data: Data, input: Partial<Inputs>): Promise<any> => {
-                    return await upload( filter(data, input), input );
-                }
-            }) as Entities;
+    let options = {
+            skip: ['encrypted'],
+            update: async (data: Data, input: Partial<Inputs>): Promise<any> => {
+                return await upload( filter(data, input), input );
+            }
         };
 
     return {
         create: async (input?: Inputs): Promise<Entities> => {
-            return await (await factory()).update(input || {});
+            return await ( entity.factory({ encrypted: false }, options)[0] as Entities ).update(input || {});
         },
+
         delete: async (ids: string[] | string): Promise<any> => {
             return await user.document.delete(ids, locator);
         },
         get: async (query: { [key: string]: any } = {}): Promise<Entities[]> => {
-            return await entity.get(factory, await user.document.get(locator, query)) as Entities[];
+            return entity.factory(await user.document.get(locator, query), options) as Entities[];
         },
         save: async (entities: Entities[] | Entities): Promise<Entities[]> => {
-            return await entity.save(factory, entities, locator) as Entities[];
+            return await entity.save(entities, locator, options) as Entities[];
         }
     };
 }

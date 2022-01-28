@@ -3,17 +3,17 @@ import type { Object } from '@src/types';
 
 
 const save = async ({ platform }: Client, documents: Document[] | Document, identity: Identity, locator: string): Promise<Object> => {
-    let saving: Document[] = Array.isArray(documents) ? documents : [documents];
+    documents = Array.isArray(documents) ? documents : [documents];
 
-    if (!saving.length) {
-        return [];
+    if (!documents.length) {
+        return {};
     }
 
     let batch: { create: Object[], replace: Object[] } = {
             create: [],
             replace: []
         },
-        ids: string[] = saving.map((data: Document) => data['$id'] || '').filter(Boolean),
+        ids: string[] = documents.map((data: Document) => data['$id'] || '').filter(Boolean),
         replaceable: Object = {},
         results = ids.length === 0 ? [] : await platform.documents.get(locator, {
             where: [
@@ -32,14 +32,11 @@ const save = async ({ platform }: Client, documents: Document[] | Document, iden
         replaceable[result['$id'].toString()] = result;
     }
 
-    for (let i = 0, n = saving.length; i < n; i++) {
-        let data: any = saving[i],
-            ignore: boolean = true,
-            replace: Document = replaceable[data['$id'] || ''];
+    let data: Document;
 
-        if (!data) {
-            continue;
-        }
+    while (data = documents.shift()) {
+        let ignore: boolean = true,
+            replace: Document = replaceable[data['$id'] || ''];
 
         if (replace) {
             for (let key in data) {
@@ -63,10 +60,10 @@ const save = async ({ platform }: Client, documents: Document[] | Document, iden
     }
 
     if (batch.create.length + batch.replace.length === 0) {
-        return [];
+        return {};
     }
 
-    return platform.documents.broadcast(batch, identity)
+    return await platform.documents.broadcast(batch, identity)
         .then((r: Response) => r.toJSON())
         .catch((e: Error) => console.error('Something went wrong:\n', e));
 };

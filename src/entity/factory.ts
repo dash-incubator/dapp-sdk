@@ -4,7 +4,7 @@ import dot from '@esportsplus/dot';
 import user from '@src/user';
 
 
-const factory = (documents: Object | Object[], { skip, update }: { skip: string[], update?: Function }): Entity[] => {
+const factory = (documents: Object[] | Object, { skip, update }: { skip: string[], update?: Function }): Entity[] => {
     let entities = [],
         loop = Array.isArray(documents) ? documents : [documents];
 

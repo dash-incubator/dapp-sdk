@@ -24,7 +24,7 @@
     "private": false,
     "scripts": {
         "build": "run-s build:ts build:web",
-        "build:ts": "tsc && tsc-alias",
+        "build:ts": "rimraf build && tsc && tsc-alias",
         "build:web": "webpack --config webpack.typescript.config.js --env=filename=dapp --env=input=%INIT_CWD%/src --env=output=%INIT_CWD%/dist --env=production=true",
         "-": "-",
         "prepare": "npm run build",

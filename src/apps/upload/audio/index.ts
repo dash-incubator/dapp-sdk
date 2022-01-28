@@ -4,5 +4,12 @@ import methods from '../methods';
 
 export default {
     definitions,
-    methods: methods.factory({ transcoded: false }, 'sdk-upload.audio')
+    methods: methods.factory({
+        defaults: {
+            encrypted: false,
+            transcoded: false
+        },
+        locator: 'sdk-upload.audio',
+        skip: ['encrypted', 'transcoded']
+    })
 };

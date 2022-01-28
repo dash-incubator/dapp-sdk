@@ -2,12 +2,12 @@ import { Data, Inputs, Entities, Object } from './types';
 import { entity, storage, user } from '@src/index';
 
 
-function filter(data: Object, { description, encrypt, keywords, name, secret, transcode }: Object): Object {
+function filter(data: Object, { description, encrypt, keywords, name, secret, transcoded }: Object): Object {
     if (description) {
         data.description = description;
     }
 
-    if (typeof encrypt == 'boolean') {
+    if (typeof encrypt === 'boolean') {
         data.encrypted = encrypt;
     }
 
@@ -23,8 +23,8 @@ function filter(data: Object, { description, encrypt, keywords, name, secret, tr
         data.secret = secret;
     }
 
-    if (typeof transcode == 'boolean') {
-        data.transcoded = transcode;
+    if (typeof transcoded === 'boolean') {
+        data.transcoded = transcoded;
     }
 
     return data;
@@ -66,17 +66,17 @@ async function upload(data: Object, { audio, banner, compress, gallery, image, t
 };
 
 
-const factory = (defaults: Object, locator: string): Object => {
+const factory = ({ defaults, locator, skip }: { defaults: Object, locator: string, skip: string[] }): Object => {
     let options = {
-            skip: ['encrypted'],
-            update: async (data: Data, input: Partial<Inputs>): Promise<any> => {
-                return await upload( filter(data, input), input );
-            }
-        };
+        skip: skip || [],
+        update:async (data: Data, input: Partial<Inputs>): Promise<any> => {
+            return await upload( filter(data, input), input );
+        }
+    };
 
     return {
         create: async (input?: Inputs): Promise<Entities> => {
-            return await ( entity.factory(Object.assign({ encrypted: false }, defaults), options)[0] as Entities ).update(input || {});
+            return await ( entity.factory(defaults, options)[0] as Entities ).update(input || {});
         },
 
         delete: async (ids: string[] | string): Promise<any> => {

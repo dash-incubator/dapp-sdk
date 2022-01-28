@@ -1,4 +1,4 @@
-import { Entity as DEntity } from '@dash/types';
+import { Entity as AbstractEntity } from '@src/types';
 
 
 type Document = {
@@ -14,7 +14,7 @@ type Document = {
     secret?: string;
 };
 
-interface Entity extends DEntity {
+interface Entity extends AbstractEntity {
     data: Document;
     update: (input: Partial<Input>) => Promise<Entity>;
 };

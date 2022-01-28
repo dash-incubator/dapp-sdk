@@ -1,4 +1,5 @@
-import type { Client, Document, Identity, Object, Response } from '@dash/types';
+import type { Client, Document, Identity, Response } from '@dash/types';
+import type { Object } from '@src/types';
 
 
 const save = async ({ platform }: Client, documents: Document[] | Document, identity: Identity, locator: string): Promise<Object> => {

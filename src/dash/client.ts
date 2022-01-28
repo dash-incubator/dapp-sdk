@@ -1,4 +1,5 @@
-import type { Client, Object } from '@dash/types';
+import type { Client } from '@dash/types';
+import type { Object } from '@src/types';
 import Dash from 'dash-core';
 
 

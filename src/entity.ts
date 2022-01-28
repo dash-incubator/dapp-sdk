@@ -1,4 +1,5 @@
-import type { Document, Entity, Object } from '@dash/types';
+import type { Document } from '@dash/types';
+import type { Entity, Object } from '@src/types';
 import dot from '@esportsplus/dot';
 import user from './user';
 

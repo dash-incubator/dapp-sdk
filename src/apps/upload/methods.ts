@@ -1,16 +1,7 @@
+import { Data, Documents, Inputs, Entities, Object } from './types';
 import entity from '@src/entity';
 import storage from '@src/storage';
 import user from '@src/user';
-import * as Audio from './audio/types';
-import * as Image from './image/types';
-import * as Video from './video/types';
-
-
-type Data = Audio.Entity['data'] | Image.Entity['data'] | Video.Entity['data'];
-type Documents = Audio.Document | Image.Document | Video.Document;
-type Inputs = Audio.Input | Image.Input | Video.Input;
-type Entities = Audio.Entity | Image.Entity | Video.Entity;
-type Object = { [key: string]: any };
 
 
 function filter(data: Object, { description, encrypt, keywords, name, secret }: Object): Object {

@@ -8,5 +8,21 @@ type Client = {
     wallet: { [key: string]: any };
 };
 
+type Contract = {
+    [key: string]: any
+};
 
-export default Client;
+type Document = {
+    [key: string]: any
+};
+
+type Identity = {
+    [key: string]: any;
+};
+
+type Response = {
+    toJSON(): { [key: string]: any };
+};
+
+
+export { Client, Contract, Document, Identity, Response };

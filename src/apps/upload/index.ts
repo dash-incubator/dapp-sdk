@@ -1,4 +1,4 @@
-import { Object } from '@dash/types';
+import { Object } from '@src/types';
 import user from '@src/user'
 import audio from './audio';
 import image from './image';

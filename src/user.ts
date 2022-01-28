@@ -1,4 +1,5 @@
-import type { Client, Contract, Document, Identity, Object, Response } from '@dash/types';
+import type { Client, Contract, Document, Identity, Response } from '@dash/types';
+import type { Object } from '@src/types';
 import config from './config';
 import dash from './dash';
 
@@ -53,23 +54,23 @@ const data = {
 
 const document = {
     delete: async (ids: string[] | string, locator: string): Promise<string[]> => {
-        let documents = await dash.document.get(client, locator, {
+        let documents = await dash.documents.get(client, locator, {
                 where: [
                     ['$id', 'in', Array.isArray(ids) ? ids : [ids]],
                     ['$ownerId', '==', ( await identity.get() ).getId()]
                 ]
             }),
-            response = await dash.document.delete(client, documents, await identity.get());
+            response = await dash.documents.delete(client, documents, await identity.get());
 
         return (response.transitions || []).map((r: Object) => (r['$id'] || '').toString()).filter(Boolean);
     },
     // Documents can return additional '$' prefixed keys in 'data' value
     get: async (locator: string, query: Object): Promise<Document[]> => {
-        return ( await dash.document.get(client, locator, query) ).map((r: Response) => r.toJSON());
+        return ( await dash.documents.get(client, locator, query) ).map((r: Response) => r.toJSON());
     },
     // `transitions` returns saved document data with '$id'
     save: async (documents: Document[] | Document, locator: string): Promise<Document[]> => {
-        return ( await dash.document.save(client, documents, await identity.get(), locator) ).transitions || [];
+        return ( await dash.documents.save(client, documents, await identity.get(), locator) ).transitions || [];
     }
 };
 

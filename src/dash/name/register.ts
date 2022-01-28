@@ -1,4 +1,5 @@
-import type { Client, Identity, Object, Response } from '@dash/types';
+import type { Client, Identity, Response } from '@dash/types';
+import type { Object } from '@src/types';
 
 
 const register = async ({ platform }: Client, identity: Identity, name: string): Promise<Object> => {

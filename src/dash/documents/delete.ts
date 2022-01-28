@@ -1,4 +1,5 @@
-import type { Client, Document, Identity, Object } from '@dash/types';
+import type { Client, Document, Identity } from '@dash/types';
+import type { Object } from '@src/types';
 
 
 const del = async ({ platform }: Client, documents: Document[] | Document, identity: Identity): Promise<Object> => {

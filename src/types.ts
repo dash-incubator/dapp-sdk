@@ -7,5 +7,9 @@ type Entity = {
     update: (data: { [key: string]: any }) => Promise<Entity>;
 };
 
+type Object = {
+    [key: string]: any
+};
 
-export default Entity;
+
+export { Entity, Object };

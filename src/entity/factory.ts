@@ -13,7 +13,7 @@ const factory = (documents: Object[] | Object, { skip, update }: { skip: string[
             entity: Entity = {
                 data: Object.assign({ encrypted: false }, data),
                 decrypt: async (secret?: string): Promise<Entity> => {
-                    if (!entity.encrypted) {
+                    if (!entity.encrypted || !entity.data.encrypted) {
                         return entity;
                     }
 
@@ -32,7 +32,7 @@ const factory = (documents: Object[] | Object, { skip, update }: { skip: string[
                 },
                 encrypted: data.encrypted || false,
                 encrypt: async (secret?: string): Promise<Entity> => {
-                    if (entity.encrypted) {
+                    if (entity.encrypted || !entity.data.encrypted) {
                         return entity;
                     }
 

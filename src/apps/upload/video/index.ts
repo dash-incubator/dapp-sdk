@@ -4,5 +4,5 @@ import methods from '../methods';
 
 export default {
     definitions,
-    methods: methods.factory('sdk-upload.video')
+    methods: methods.factory({ transcoded: false }, 'sdk-upload.video')
 };

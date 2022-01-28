@@ -2,7 +2,7 @@ import { Data, Inputs, Entities, Object } from './types';
 import { entity, storage, user } from '@src/index';
 
 
-function filter(data: Object, { description, encrypt, keywords, name, secret }: Object): Object {
+function filter(data: Object, { description, encrypt, keywords, name, secret, transcode }: Object): Object {
     if (description) {
         data.description = description;
     }
@@ -21,6 +21,10 @@ function filter(data: Object, { description, encrypt, keywords, name, secret }: 
 
     if (secret) {
         data.secret = secret;
+    }
+
+    if (typeof transcode == 'boolean') {
+        data.transcoded = transcode;
     }
 
     return data;
@@ -62,7 +66,7 @@ async function upload(data: Object, { audio, banner, compress, gallery, image, t
 };
 
 
-const factory = (locator: string): Object => {
+const factory = (defaults: Object, locator: string): Object => {
     let options = {
             skip: ['encrypted'],
             update: async (data: Data, input: Partial<Inputs>): Promise<any> => {
@@ -72,7 +76,7 @@ const factory = (locator: string): Object => {
 
     return {
         create: async (input?: Inputs): Promise<Entities> => {
-            return await ( entity.factory({ encrypted: false }, options)[0] as Entities ).update(input || {});
+            return await ( entity.factory(Object.assign({ encrypted: false }, defaults), options)[0] as Entities ).update(input || {});
         },
 
         delete: async (ids: string[] | string): Promise<any> => {

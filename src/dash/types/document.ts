@@ -1,4 +1,6 @@
-type Document = { [key: number | string]: any };
+type Document = {
+    [key: string]: any
+};
 
 
 export default Document;

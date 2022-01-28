@@ -1,5 +1,5 @@
 type Response = {
-    toJSON(): object;
+    toJSON(): { [key: string]: any };
 };
 
 

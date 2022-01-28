@@ -1,10 +1,10 @@
 type Entity = {
     data: { [key: string]: any };
-    decrypt: (secret?: string) => Promise<void>;
-    delete: (key: string) => void;
+    decrypt: (secret?: string) => Promise<Entity>;
+    delete: (key: string) => Entity;
     encrypted: boolean;
-    encrypt: (secret?: string) => Promise<void>;
-    update: (data: { [key: string]: any }) => Promise<void>;
+    encrypt: (secret?: string) => Promise<Entity>;
+    update: (data: { [key: string]: any }) => Promise<Entity>;
 };
 
 

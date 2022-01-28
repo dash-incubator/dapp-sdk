@@ -1,13 +1,14 @@
-import type { Client, Document, Identity, Response } from '@dash/types';
+import type { Client, Document, Identity, Object } from '@dash/types';
 
 
-const del = async ({ platform }: Client, documents: Document[], identity: Identity): Promise<Document[]> => {
+const del = async ({ platform }: Client, documents: Document[] | Document, identity: Identity): Promise<Object> => {
+    documents = Array.isArray(documents) ? documents : [documents];
+
     if (!documents.length) {
         return [];
     }
 
     return platform.documents.broadcast({ delete: documents }, identity)
-        .then((r: Response) => r.toJSON())
         .catch((e: Error) => console.error('Something went wrong:\n', e));
 };
 

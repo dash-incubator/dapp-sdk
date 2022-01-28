@@ -2,24 +2,24 @@ import type { Client, Document, Identity, Object, Response } from '@dash/types';
 
 
 const save = async ({ platform }: Client, documents: Document[] | Document, identity: Identity, locator: string): Promise<Object> => {
-    if (documents && !Array.isArray(documents)) {
-        documents = [documents];
-    }
+    let saving: Document[] = Array.isArray(documents) ? documents : [documents];
 
-    if (!documents.length) {
+    if (!saving.length) {
         return [];
     }
 
-    let batch: { create: Object[], replace: Object[], replaceable: Object } = {
+    let batch: { create: Object[], replace: Object[] } = {
             create: [],
-            replace: [],
-            replaceable: {}
+            replace: []
         },
-        ids: string[] = documents.map((data: Object) => (data['$id'] || '').toString()).filter((value: any) => value),
-        results = ids.length ? await platform.documents.get(locator, [
-                ['$ownerId', '==', identity.id.toString()],
+        ids: string[] = saving.map((data: Document) => data['$id'] || '').filter(Boolean),
+        replaceable: Object = {},
+        results = ids.length === 0 ? [] : await platform.documents.get(locator, {
+            where: [
+                ['$ownerId', '==', identity.getId()],
                 ['$id', 'in', ids]
-            ]) : [];
+            ]
+        });
 
     for (let i = 0, n = results.length; i < n; i++) {
         let result = results[i];
@@ -28,33 +28,33 @@ const save = async ({ platform }: Client, documents: Document[] | Document, iden
             continue;
         }
 
-        batch.replaceable[result['$id'].toString()] = result;
+        replaceable[result['$id'].toString()] = result;
     }
 
-    for (let i = 0, n = documents.length; i < n; i++) {
-        let data: any = documents[i],
+    for (let i = 0, n = saving.length; i < n; i++) {
+        let data: any = saving[i],
             ignore: boolean = true,
-            replaceable: any = batch.replaceable[(data['$id'] || '').toString()];
+            replace: Document = replaceable[data['$id'] || ''];
 
         if (!data) {
             continue;
         }
 
-        if (replaceable) {
+        if (replace) {
             for (let key in data) {
-                if (key.startsWith('$') || data[key] == replaceable.data[key]) {
+                if (key.startsWith('$') || data[key] == replace.data[key]) {
                     continue;
                 }
 
                 ignore = false;
-                replaceable.set(key, data[key]);
+                replace.set(key, data[key]);
             }
 
             if (ignore) {
                 continue;
             }
 
-            batch.replace.push(replaceable);
+            batch.replace.push(replace);
         }
         else {
             batch.create.push( await platform.documents.create(locator, identity, data) );

@@ -3,12 +3,12 @@ import dot from '@esportsplus/dot';
 import user from './user';
 
 
-const create = async (data: Object, { skip, update }: { skip: string[], update?: Function }): Promise<Entity> => {
-    let entity: Entity = {
-        data: {},
-        decrypt: async (secret?: string): Promise<void> => {
+const factory = async (data: Object, { skip, update }: { skip: string[], update?: Function }): Promise<Entity> => {
+    const entity: Entity = {
+        data: Object.assign({ encrypted: false }, data),
+        decrypt: async (secret?: string): Promise<Entity> => {
             if (!entity.encrypted) {
-                return;
+                return entity;
             }
 
             entity.data = await user.data.recursive.decrypt(entity.data, {
@@ -16,14 +16,18 @@ const create = async (data: Object, { skip, update }: { skip: string[], update?:
                 skip
             });
             entity.encrypted = false;
+
+            return entity;
         },
-        delete: (key: string): void => {
+        delete: (key: string): Entity => {
             dot.set(entity.data, key, undefined);
+
+            return entity;
         },
-        encrypted: false,
-        encrypt: async (secret?: string): Promise<void> => {
+        encrypted: data.encrypted || false,
+        encrypt: async (secret?: string): Promise<Entity> => {
             if (entity.encrypted) {
-                return;
+                return entity;
             }
 
             entity.data = await user.data.recursive.encrypt(entity.data, {
@@ -31,60 +35,54 @@ const create = async (data: Object, { skip, update }: { skip: string[], update?:
                 skip: (skip || [])
             });
             entity.encrypted = true;
+
+            return entity;
         },
-        update: async (input: Object): Promise<void> => {
+        update: async (input: Object): Promise<Entity> => {
             await entity.decrypt();
 
             entity.data = update ? (await update(entity.data, input)) : Object.assign(entity.data, input);
+
+            return entity;
         }
     };
-
-    if (Object.keys(data).length) {
-        await entity.update(data);
-    }
 
     return entity;
 };
 
-const get = async (create: (data: Object) => Promise<Entity>, documents: Document[]): Promise<Entity[]> => {
-    let entities = [];
+const get = async (factory: (data: Object) => Promise<Entity>, documents: Document[] | Document): Promise<Entity[]> => {
+    let entities = [],
+        loop: Document[] = Array.isArray(documents) ? documents : [documents];
 
-    for (let i = 0, n = documents.length; i < n; i++) {
-        let data = documents[i];
+    for (let i = 0, n = loop.length; i < n; i++) {
+        let data = loop[i];
 
         if (!data) {
             continue;
         }
 
-        let entity = await create(data);
-
-        if (entity.data.encrypted) {
-            entity.encrypted = true;
-        }
-
-        entities.push(entity);
+        entities.push( await factory(data) );
     }
 
     return entities;
 };
 
-const save = async (entities: Entity[], locator: string): Promise<any> => {
-    let documents = [];
+const save = async (factory: (data: Object) => Promise<Entity>, entities: Entity[] | Entity, locator: string): Promise<any> => {
+    let documents = [],
+        loop: Document[] = Array.isArray(entities) ? entities : [entities];
 
-    for (let i = 0, n = entities.length; i < n; i++) {
-        let entity = entities[i];
+    for (let i = 0, n = loop.length; i < n; i++) {
+        let entity = loop[i];
 
         if (!entity) {
             continue;
         }
 
-        await entity.encrypt();
-
-        documents.push( entity.data );
+        documents.push( ( await entity.encrypt() ).data );
     }
 
-    return await user.document.save(documents, locator);
+    return await get(factory, await user.document.save(documents, locator));
 };
 
 
-export default { create, get, save };
+export default { factory, get, save };

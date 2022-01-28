@@ -1,6 +1,5 @@
 type Identity = {
     [key: string]: any;
-    id: string;
 };
 
 

@@ -1,9 +1,8 @@
-import type { Client, Object, Response } from '@dash/types';
+import type { Client, Contract } from '@dash/types';
 
 
-const get = async ({ platform }: Client, id: string): Promise<Object> => {
+const get = async ({ platform }: Client, id: string): Promise<Contract> => {
     return platform.contracts.get(id)
-        .then((r: Response) => r.toJSON())
         .catch((e: Error) => console.error('Something went wrong:\n', e));
 }
 

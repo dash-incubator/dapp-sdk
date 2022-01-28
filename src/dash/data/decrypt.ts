@@ -1,8 +1,11 @@
 import type { Client } from '@dash/types';
 
 
-const decrypt = async ({ getWalletAccount, wallet }: Client, data: any, secret?: string): Promise<string> => {
-    return await (await getWalletAccount()).decrypt('AES', data, (secret || await wallet.exportWallet()));
+const decrypt = async (client: Client, data: any, secret?: string): Promise<string> => {
+    let account = await client.getWalletAccount(),
+        key = secret || await client.wallet.exportWallet();
+
+    return await account.decrypt('AES', data, key);
 }
 
 

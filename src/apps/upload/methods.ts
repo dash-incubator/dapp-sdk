@@ -1,0 +1,103 @@
+import entity from '@src/entity';
+import storage from '@src/storage';
+import user from '@src/user';
+import * as Audio from './audio/types';
+import * as Image from './image/types';
+import * as Video from './video/types';
+
+
+type Data = Audio.Entity['data'] | Image.Entity['data'] | Video.Entity['data'];
+type Documents = Audio.Document | Image.Document | Video.Document;
+type Inputs = Audio.Input | Image.Input | Video.Input;
+type Entities = Audio.Entity | Image.Entity | Video.Entity;
+type Object = { [key: string]: any };
+
+
+function filter(data: Object, { description, encrypt, keywords, name, secret }: Object): Object {
+    if (description) {
+        data.description = description;
+    }
+
+    if (typeof encrypt == 'boolean') {
+        data.encrypted = encrypt;
+    }
+
+    if (keywords && keywords.length) {
+        data.keywords = keywords.filter(Boolean);
+    }
+
+    if (name) {
+        data.name = name;
+    }
+
+    if (secret) {
+        data.secret = secret;
+    }
+
+    return data;
+};
+
+async function upload(data: Object, { audio, banner, compress, gallery, image, thumbnail, video }: Object): Promise<Object> {
+    let options = {
+            compress,
+            encrypt: data.encrypted,
+            secret: data.secret
+        };
+
+    data.ipfs = data.ipfs || {};
+
+    if (audio) {
+        data.ipfs.audio = await storage.ipfs.upload.data(audio, options);
+    }
+
+    if (banner) {
+        data.ipfs.banner = await storage.ipfs.upload.image(banner, options);
+    }
+
+    if (gallery) {
+        data.ipfs.gallery = await storage.ipfs.upload.images(Array.from(gallery), options);
+    }
+    else if (image) {
+        data.ipfs.image = await storage.ipfs.upload.image(image, options);
+    }
+
+    if (thumbnail) {
+        data.ipfs.thumbnail = await storage.ipfs.upload.image(thumbnail, options);
+    }
+
+    if (video) {
+        data.ipfs.video = await storage.ipfs.upload.data(video, options);
+    }
+
+    return data;
+};
+
+
+const factory = (locator: string): Object => {
+    let factory = async (data: Partial<Documents> = { encrypted: false }): Promise<Entities> => {
+            return await entity.factory(data, {
+                skip: ['encrypted'],
+                update: async (data: Data, input: Partial<Inputs>): Promise<any> => {
+                    return await upload( filter(data, input), input );
+                }
+            }) as Entities;
+        };
+
+    return {
+        create: async (input?: Inputs): Promise<Entities> => {
+            return await (await factory()).update(input || {});
+        },
+        delete: async (ids: string[] | string): Promise<any> => {
+            return await user.document.delete(ids, locator);
+        },
+        get: async (query: { [key: string]: any } = {}): Promise<Entities[]> => {
+            return await entity.get(factory, await user.document.get(locator, query)) as Entities[];
+        },
+        save: async (entities: Entities[] | Entities): Promise<Entities[]> => {
+            return await entity.save(factory, entities, locator) as Entities[];
+        }
+    };
+}
+
+
+export default { factory };

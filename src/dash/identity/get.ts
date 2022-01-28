@@ -1,9 +1,21 @@
-import type { Client, Identity, Object, Response } from '@dash/types';
+import type { Client, Identity } from '@dash/types';
+import create from './create';
 
 
-const get = async ({ platform }: Client, id: Identity['id']): Promise<Object> => {
-    return await platform.identities.get(id)
-        .then((r: Response) => r.toJSON())
+const get = async (client: Client, id: string = ''): Promise<Identity> => {
+    if (!id) {
+        let account = await client.getWalletAccount(),
+            identities: string[] = await account.identities.getIdentityIds();
+
+        if (identities[0]) {
+            id = identities[0];
+        }
+        else {
+            return await create(client);
+        }
+    }
+
+    return await client.platform.identities.get(id)
         .catch((e: Error) => console.error('Something went wrong:\n', e));
 };
 

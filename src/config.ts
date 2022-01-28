@@ -29,7 +29,7 @@ const get = async (key: string, value: any = null): Promise<any> => {
     return value;
 };
 
-const has = (key: string) => {
+const has = (key: string): boolean => {
     return dot.has(data, key);
 };
 

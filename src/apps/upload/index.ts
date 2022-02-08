@@ -1,6 +1,7 @@
 import { Object } from '@src/types';
 import user from '@src/user'
 import audio from './audio';
+import gallery from './gallery';
 import image from './image';
 import video from './video';
 
@@ -15,13 +16,14 @@ const register = async () => {
             return contract;
         }
 
-        return await user.contract.register(Object.assign({}, audio.definitions, image.definitions, video.definitions));
+        return await user.contract.register(Object.assign({}, audio.definitions, gallery.definitions, image.definitions, video.definitions));
     });
 };
 
 
 export default {
     audio: audio.methods,
+    gallery: gallery.methods,
     image: image.methods,
     register,
     video: video.methods

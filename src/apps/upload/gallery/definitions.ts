@@ -1,5 +1,5 @@
 export default {
-    image: {
+    gallery: {
         additionalProperties: false,
         indices: [
             {
@@ -17,11 +17,14 @@ export default {
             ipfs: {
                 additionalProperties: false,
                 properties: {
-                    image: {
-                        type: 'string'
+                    gallery: {
+                        items: {
+                            type: 'string'
+                        },
+                        type: 'array'
                     }
                 },
-                required: ['image'],
+                required: ['gallery'],
                 type: 'object'
             },
             keywords: {

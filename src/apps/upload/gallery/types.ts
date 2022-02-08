@@ -6,7 +6,7 @@ type Document = {
     description?: string;
     encrypted: boolean;
     ipfs: {
-        image: string;
+        gallery: string[];
     };
     keywords?: string[];
     name?: string;
@@ -22,7 +22,7 @@ type Input = {
     compress?: boolean;
     description?: string;
     encrypt?: boolean;
-    image?: File;
+    gallery?: FileList;
     keywords?: string[];
     name?: string;
     secret?: string;

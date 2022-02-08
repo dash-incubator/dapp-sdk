@@ -50,7 +50,8 @@ async function upload(data: Object, { audio, banner, compress, gallery, image, t
     if (gallery) {
         data.ipfs.gallery = await storage.ipfs.upload.images(Array.from(gallery), options);
     }
-    else if (image) {
+
+    if (image) {
         data.ipfs.image = await storage.ipfs.upload.image(image, options);
     }
 

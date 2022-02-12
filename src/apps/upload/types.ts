@@ -1,7 +1,7 @@
-import * as Audio from './audio/types';
-import * as Gallery from './gallery/types';
-import * as Image from './image/types';
-import * as Video from './video/types';
+import type * as Audio from './audio/types';
+import type * as Gallery from './gallery/types';
+import type * as Image from './image/types';
+import type * as Video from './video/types';
 
 
 type Data = Audio.Entity['data'] | Gallery.Entity['data'] | Image.Entity['data'] | Video.Entity['data'];
@@ -17,4 +17,4 @@ type Object = {
 };
 
 
-export { Data, Documents, Inputs, Entities, Object };
+export type { Data, Documents, Inputs, Entities, Object };

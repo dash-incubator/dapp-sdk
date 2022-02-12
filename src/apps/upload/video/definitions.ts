@@ -1,52 +1,45 @@
 export default {
     video: {
         additionalProperties: false,
-            indices: [
-                {
-                    properties: [{ $ownerId: 'asc' }],
-                    unique: false
-                }
-            ],
-            properties: {
-                description: {
-                    type: 'string'
-                },
-                encrypted: {
-                    type: 'boolean'
-                },
-                ipfs: {
-                    additionalProperties: false,
-                    properties: {
-                        banner: {
-                            type: 'string'
-                        },
-                        thumbnail: {
-                            type: 'string'
-                        },
-                        video: {
-                            type: 'string'
-                        }
-                    },
-                    required: ['video'],
-                    type: 'object'
-                },
-                keywords: {
-                    items: {
-                        type: 'string'
-                    },
-                    type: 'array'
-                },
-                name: {
-                    type: 'string'
-                },
-                secret: {
-                    type: 'string'
-                },
-                transcoded: {
-                    type: 'boolean'
-                }
+        indices: [
+            {
+                properties: [{ $ownerId: 'asc' }],
+                unique: false
+            }
+        ],
+        properties: {
+            banner: {
+                type: 'string'
             },
-            required: ['encrypted', 'transcoded'],
-            type: 'object'
+            description: {
+                type: 'string'
+            },
+            encrypted: {
+                type: 'boolean'
+            },
+            keywords: {
+                items: {
+                    type: 'string'
+                },
+                type: 'array'
+            },
+            name: {
+                type: 'string'
+            },
+            secret: {
+                type: 'string'
+            },
+            thumbnail: {
+                type: 'string'
+            },
+            transcoded: {
+                type: 'boolean'
+            },
+            video: {
+                type: 'string'
+            }
+        },
+        required: ['encrypted', 'transcoded', 'video'],
+        type: 'object'
     }
 };

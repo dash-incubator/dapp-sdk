@@ -1,6 +1,10 @@
+type Document = {
+    $id?: string;
+};
+
 type Object = {
     [key: string]: any
 };
 
 
-export { Object };
+export type { Document, Object };

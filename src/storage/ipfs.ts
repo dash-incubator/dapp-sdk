@@ -1,4 +1,4 @@
-import { IpfsOptions } from './types';
+import type { IpfsOptions } from './types';
 import compressor from 'browser-image-compression';
 import user from '@src/user';
 import * as IPFS from 'ipfs-core';
@@ -55,7 +55,7 @@ const upload = {
             cid = ( await node.add(data) ).cid.toString();
         }
 
-        return cid;
+        return `https://ipfs.io/ipfs/${cid}`;
     },
     images: async function(files: File[], options: IpfsOptions = {}): Promise<string[]> {
         let cids: string[] = [];

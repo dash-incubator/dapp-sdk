@@ -14,15 +14,8 @@ export default {
             encrypted: {
                 type: 'boolean'
             },
-            ipfs: {
-                additionalProperties: false,
-                properties: {
-                    image: {
-                        type: 'string'
-                    }
-                },
-                required: ['image'],
-                type: 'object'
+            image: {
+                type: 'string'
             },
             keywords: {
                 items: {
@@ -37,7 +30,7 @@ export default {
                 type: 'string'
             }
         },
-        required: ['encrypted'],
+        required: ['encrypted', 'image'],
         type: 'object'
     }
 };

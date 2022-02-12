@@ -1,4 +1,4 @@
-import { Data, Inputs, Entities, Object } from './types';
+import type { Data, Inputs, Entities, Object } from './types';
 import { entity, storage, user } from '@src/index';
 
 
@@ -37,30 +37,28 @@ async function upload(data: Object, { audio, banner, compress, gallery, image, t
             secret: data.secret
         };
 
-    data.ipfs = data.ipfs || {};
-
     if (audio) {
-        data.ipfs.audio = await storage.ipfs.upload.data(audio, options);
+        data.audio = await storage.ipfs.upload.data(audio, options);
     }
 
     if (banner) {
-        data.ipfs.banner = await storage.ipfs.upload.image(banner, options);
+        data.banner = await storage.ipfs.upload.image(banner, options);
     }
 
     if (gallery) {
-        data.ipfs.gallery = await storage.ipfs.upload.images(Array.from(gallery), options);
+        data.gallery = await storage.ipfs.upload.images(Array.from(gallery), options);
     }
 
     if (image) {
-        data.ipfs.image = await storage.ipfs.upload.image(image, options);
+        data.image = await storage.ipfs.upload.image(image, options);
     }
 
     if (thumbnail) {
-        data.ipfs.thumbnail = await storage.ipfs.upload.image(thumbnail, options);
+        data.thumbnail = await storage.ipfs.upload.image(thumbnail, options);
     }
 
     if (video) {
-        data.ipfs.video = await storage.ipfs.upload.data(video, options);
+        data.video = await storage.ipfs.upload.data(video, options);
     }
 
     return data;

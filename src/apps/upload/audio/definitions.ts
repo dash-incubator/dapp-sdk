@@ -1,52 +1,45 @@
 export default {
     audio: {
         additionalProperties: false,
-            indices: [
-                {
-                    properties: [{ $ownerId: 'asc' }],
-                    unique: false
-                }
-            ],
-            properties: {
-                description: {
-                    type: 'string'
-                },
-                encrypted: {
-                    type: 'boolean'
-                },
-                ipfs: {
-                    additionalProperties: false,
-                    properties: {
-                        audio: {
-                            type: 'string'
-                        },
-                        banner: {
-                            type: 'string'
-                        },
-                        thumbnail: {
-                            type: 'string'
-                        }
-                    },
-                    required: ['audio'],
-                    type: 'object'
-                },
-                keywords: {
-                    items: {
-                        type: 'string'
-                    },
-                    type: 'array'
-                },
-                name: {
-                    type: 'string'
-                },
-                secret: {
-                    type: 'string'
-                },
-                transcoded: {
-                    type: 'boolean'
-                }
+        indices: [
+            {
+                properties: [{ $ownerId: 'asc' }],
+                unique: false
+            }
+        ],
+        properties: {
+            audio: {
+                type: 'string'
             },
-            required: ['encrypted', 'transcoded'],
-            type: 'object'
+            banner: {
+                type: 'string'
+            },
+            description: {
+                type: 'string'
+            },
+            encrypted: {
+                type: 'boolean'
+            },
+            keywords: {
+                items: {
+                    type: 'string'
+                },
+                type: 'array'
+            },
+            name: {
+                type: 'string'
+            },
+            secret: {
+                type: 'string'
+            },
+            thumbnail: {
+                type: 'string'
+            },
+            transcoded: {
+                type: 'boolean'
+            }
+        },
+        required: ['audio', 'encrypted', 'transcoded'],
+        type: 'object'
     }
 };

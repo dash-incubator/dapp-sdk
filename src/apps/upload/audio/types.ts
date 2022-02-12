@@ -1,18 +1,16 @@
-import { Entity as AbstractEntity } from '@entity/types';
+import type { Document as AbstractDocument } from '@src/types';
+import type { Entity as AbstractEntity } from '@entity/types';
 
 
-type Document = {
-    $id?: string;
+interface Document extends AbstractDocument {
+    audio: string;
+    banner?: string;
     description?: string;
     encrypted: boolean;
-    ipfs: {
-        audio: string;
-        banner?: string;
-        thumbnail?: string;
-    };
     keywords?: string[];
     name?: string;
     secret?: string;
+    thumbnail?: string;
     transcoded: boolean;
 };
 
@@ -35,4 +33,4 @@ type Input = {
 };
 
 
-export { Document, Entity, Input };
+export type { Document, Entity, Input };

@@ -3,7 +3,7 @@ import factory from './factory';
 import user from '@src/user';
 
 
-const save = async (entities: Entity[] | Entity, locator: string, { skip, update }: { skip: string[], update?: Function }): Promise<Entity[]> => {
+const save = async (entities: Entity[] | Entity, locator: string, { skip, update }: { skip?: string[], update?: Function } = {}): Promise<Entity[]> => {
     let documents = [],
         loop: Entity[] = Array.isArray(entities) ? entities : [entities];
 

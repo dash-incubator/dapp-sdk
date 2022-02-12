@@ -14,18 +14,11 @@ export default {
             encrypted: {
                 type: 'boolean'
             },
-            ipfs: {
-                additionalProperties: false,
-                properties: {
-                    gallery: {
-                        items: {
-                            type: 'string'
-                        },
-                        type: 'array'
-                    }
+            gallery: {
+                items: {
+                    type: 'string'
                 },
-                required: ['gallery'],
-                type: 'object'
+                type: 'array'
             },
             keywords: {
                 items: {
@@ -40,7 +33,7 @@ export default {
                 type: 'string'
             }
         },
-        required: ['encrypted'],
+        required: ['encrypted', 'gallery'],
         type: 'object'
     }
 };

@@ -12,4 +12,4 @@ type LocalOptions = {
 };
 
 
-export { IpfsOptions, LocalOptions };
+export type { IpfsOptions, LocalOptions };

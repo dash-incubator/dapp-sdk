@@ -8,4 +8,4 @@ type Entity = {
 };
 
 
-export { Entity };
+export type { Entity };

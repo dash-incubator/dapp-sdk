@@ -4,9 +4,13 @@ import dot from '@esportsplus/dot';
 import user from '@src/user';
 
 
-const factory = (documents: Object[] | Object, { skip, update }: { skip: string[], update?: Function }): Entity[] => {
+const factory = (documents: Object[] | Object = {}, { skip, update }: { skip?: string[], update?: Function } = {}): Entity[] => {
     let entities = [],
         loop = Array.isArray(documents) ? documents : [documents];
+
+    if (!skip) {
+        skip = [];
+    }
 
     for (let i = 0, n = loop.length; i < n; i++) {
         let data = loop[i] || {},
@@ -38,7 +42,7 @@ const factory = (documents: Object[] | Object, { skip, update }: { skip: string[
 
                     entity.data = await user.data.recursive.encrypt(entity.data, {
                         secret: secret || (entity.data.secret || ''),
-                        skip: (skip || [])
+                        skip
                     });
                     entity.encrypted = true;
 
@@ -52,10 +56,6 @@ const factory = (documents: Object[] | Object, { skip, update }: { skip: string[
                     return entity;
                 }
             };
-
-        if (!data) {
-            continue;
-        }
 
         entities.push( entity );
     }

@@ -1,4 +1,4 @@
-import { LocalOptions } from './types';
+import type { LocalOptions } from './types';
 import localforage from 'localforage';
 
 

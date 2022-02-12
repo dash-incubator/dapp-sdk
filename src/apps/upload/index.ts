@@ -1,4 +1,4 @@
-import { Object } from '@src/types';
+import type { Object } from '@src/types';
 import user from '@src/user'
 import audio from './audio';
 import gallery from './gallery';

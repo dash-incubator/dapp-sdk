@@ -25,4 +25,4 @@ type Response = {
 };
 
 
-export { Client, Contract, Document, Identity, Response };
+export type { Client, Contract, Document, Identity, Response };

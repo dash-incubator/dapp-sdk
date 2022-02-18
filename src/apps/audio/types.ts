@@ -24,7 +24,7 @@ type Input = {
     banner?: File;
     compress?: boolean;
     description?: string;
-    encrypted?: boolean;
+    encrypt?: boolean;
     keywords?: string[];
     name?: string;
     secret?: string;

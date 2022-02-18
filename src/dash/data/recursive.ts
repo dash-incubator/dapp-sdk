@@ -11,15 +11,17 @@ const recursive = async (client: Client, values: Object, { decrypt, encrypt, sec
     skip = skip || [];
 
     for (let key in values) {
-        if (key.startsWith('$') || skip.includes(key) || [null, undefined].includes(values[key])) {
+        let value = values[key];
+
+        if (key.startsWith('$') || skip.includes(key) || [null, undefined].includes(value)) {
             continue;
         }
 
-        if (typeof values[key] === 'object') {
-            values[key] = await recursive(client, values[key], { decrypt, encrypt, secret });
+        if (typeof value === 'object' && value !== null) {
+            values[key] = await recursive(client, value, { decrypt, encrypt, secret });
         }
         else {
-            values[key] = await actions[decrypt ? 'decrypt' : 'encrypt'](client, values[key], (key === 'secret' ? '' : secret));
+            values[key] = await actions[decrypt ? 'decrypt' : 'encrypt'](client, value, (key === 'secret' ? '' : secret));
         }
     }
 

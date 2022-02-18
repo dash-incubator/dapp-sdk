@@ -20,9 +20,11 @@
         "noUnusedParameters": true,
         "outDir": "./build",
         "paths": {
+            "@apps/*": ["apps/*"],
             "@dash/*": ["dash/*"],
             "@entity/*": ["entity/*"],
-            "@src/*": ["*"]
+            "@src/*": ["*"],
+            "@storage/*": ["storage/*"]
         },
         "removeComments": true,
         "resolveJsonModule": true,

@@ -1,12 +1,13 @@
 import type { Object } from '@src/types';
 import audio from './audio';
+import comment from './comment';
 import gallery from './gallery';
 import image from './image';
 import video from './video';
 import user from '@src/user';
 
 
-let apps: Object = { audio, gallery, image, video },
+let apps: Object = { audio, comment, gallery, image, video },
     definitions: Object = {},
     methods: Object = {};
 

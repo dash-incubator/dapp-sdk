@@ -3,8 +3,7 @@ export default {
         additionalProperties: false,
         indices: [
             {
-                properties: [{ $ownerId: 'asc' }],
-                unique: false
+                properties: [{ $ownerId: 'asc' }]
             }
         ],
         properties: {

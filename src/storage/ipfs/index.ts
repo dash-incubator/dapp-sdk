@@ -62,19 +62,21 @@ const upload = async (data: Upload['data'], { compress, encrypt, secret }: Uploa
 };
 
 const uploadable = (value: any): boolean => {
-    let valid = true;
+    let valid = false;
 
-    if (value instanceof File) { }
+    if (value instanceof File) {
+        valid = true;
+    }
     else if (typeof value === 'object' && value !== null) {
         valid = 'content' in value;
     }
     else if (Array.isArray(value)) {
         for (let i = 0, n = value.length; i < n; i++) {
-            if (!valid) {
-                return valid;
-            }
-
             valid = uploadable(value[i]);
+
+            if (!valid) {
+                break;
+            }
         }
     }
 

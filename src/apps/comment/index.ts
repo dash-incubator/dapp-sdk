@@ -5,15 +5,11 @@ import factory from '@apps/factory';
 
 
 export default factory({
-    defaults: { encrypted: false, transcoded: false },
     definitions,
     locator: 'sdk.comment',
     options: {
-        skip: ['encrypted', 'transcoded'],
         update: async (data: Document, input: Partial<Input>): Promise<any> => {
-            return await entity.update(data, input, definitions.comment.properties, {
-                encrypt: 'encrypted'
-            });
+            return await entity.update(data, input, definitions.comment.properties);
         }
     }
 });

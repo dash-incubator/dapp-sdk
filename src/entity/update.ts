@@ -19,15 +19,13 @@ let methods: Object = {
         object: async (input: Object, options: Options, properties: Object): Promise<Object> => {
             return await process({}, input, options, properties);
         },
-        string: async (value: any, { upload }: Options): Promise<undefined | string> => {
-            if (value) {
-                if (typeof value === 'string') {
-                    return value;
-                }
+        string: async (value: any, { upload }: Options = { translate: {}, upload: {} }): Promise<undefined | string> => {
+            if (typeof value === 'string') {
+                return value;
+            }
 
-                if (storage.ipfs.uploadable(value)) {
-                    return await storage.ipfs.upload(value, upload);
-                }
+            if (storage.ipfs.uploadable(value)) {
+                return await storage.ipfs.upload(value, upload);
             }
 
             return undefined;

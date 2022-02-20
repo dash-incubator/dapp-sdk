@@ -15,7 +15,7 @@ const factory = (documents: Object[] | Object = {}, { skip, update }: { skip?: s
     for (let i = 0, n = loop.length; i < n; i++) {
         let data = loop[i] || {},
             entity: Entity = {
-                data: Object.assign({ encrypted: false }, data),
+                data,
                 decrypt: async (secret?: string): Promise<Entity> => {
                     if (!entity.encrypted || !entity.data.encrypted) {
                         return entity;

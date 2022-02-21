@@ -3,10 +3,10 @@ export default {
         additionalProperties: false,
         indices: [
             {
-                properties: [{ $createdAt: 'asc' }]
+                properties: [{ $createdAt: 'desc' }]
             },
             {
-                properties: [{ $updatedAt: 'asc' }]
+                properties: [{ $updatedAt: 'desc' }]
             },
             {
                 properties: [{ $ownerId: 'asc' }]

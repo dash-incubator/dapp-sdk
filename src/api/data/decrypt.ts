@@ -1,4 +1,4 @@
-import type { Client } from '@dash/types';
+import type { Client } from '@api/types';
 
 
 const decrypt = async (client: Client, data: any, secret?: string): Promise<string> => {

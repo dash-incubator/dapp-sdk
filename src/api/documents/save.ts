@@ -1,4 +1,4 @@
-import type { Client, Document, Identity, Response } from '@dash/types';
+import type { Client, Document, Identity, Response } from '@api/types';
 import type { Object } from '@src/types';
 
 

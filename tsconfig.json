@@ -20,8 +20,8 @@
         "noUnusedParameters": true,
         "outDir": "./build",
         "paths": {
+            "@api/*": ["api/*"],
             "@apps/*": ["apps/*"],
-            "@dash/*": ["dash/*"],
             "@entity/*": ["entity/*"],
             "@src/*": ["*"],
             "@storage/*": ["storage/*"]

@@ -1,4 +1,4 @@
-import type { Client } from '@dash/types';
+import type { Client } from '@api/types';
 import type { Object } from '@src/types';
 import decrypt from './decrypt';
 import encrypt from './encrypt';

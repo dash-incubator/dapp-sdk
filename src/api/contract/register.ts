@@ -1,4 +1,4 @@
-import type { Client, Contract, Identity } from '@dash/types';
+import type { Client, Contract, Identity } from '@api/types';
 import type { Object } from '@src/types';
 
 

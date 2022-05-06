@@ -1,4 +1,4 @@
-import type { Client, Contract } from '@dash/types';
+import type { Client, Contract } from '@api/types';
 
 
 const get = async ({ platform }: Client, id: string): Promise<Contract> => {

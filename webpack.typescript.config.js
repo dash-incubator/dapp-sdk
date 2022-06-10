@@ -4,6 +4,7 @@ const webpack = require('webpack');
 
 const config = ({ filename, input, library, output, production }) => {
     let optimization = {
+            mangleWasmImports: false,
             usedExports: false
         };
 
@@ -11,11 +12,7 @@ const config = ({ filename, input, library, output, production }) => {
     production = production ? false : true;
 
     if (production) {
-        optimization = {
-            mangleWasmImports: false,
-            minimize: false,
-            usedExports: false
-        };
+        optimization.minimize = false;
     }
 
     return {

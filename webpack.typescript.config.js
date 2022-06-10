@@ -1,6 +1,5 @@
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const glob = require('glob');
 const webpack = require('webpack');
 
 
@@ -22,7 +21,7 @@ const config = ({ filename, input, library, output, production }) => {
 
     return {
         entry: {
-            [(filename || 'app') + (production ? '.min' : '')]: glob.sync(`${input}/{,!(node_modules)/**/}!(webpack)*!(.d).ts`)
+            [(filename || 'app') + (production ? '.min' : '')]: input
         },
         mode: (production ? 'development' : 'production'),
         module: {

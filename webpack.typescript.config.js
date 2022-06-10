@@ -1,4 +1,3 @@
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const webpack = require('webpack');
 
@@ -40,13 +39,7 @@ const config = ({ filename, input, library, output, production }) => {
             library: library || filename,
             path: output,
         },
-        plugins: [
-            new NodePolyfillPlugin(),
-            new webpack.ProvidePlugin({
-                Buffer: ['buffer', 'Buffer'],
-                process: 'process/browser'
-            })
-        ],
+        plugins: [],
         resolve: {
             extensions: ['.js', '.ts', '.tsx'],
             fallback: {

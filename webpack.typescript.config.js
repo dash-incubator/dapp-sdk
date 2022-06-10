@@ -1,17 +1,17 @@
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const webpack = require('webpack');
 
 
 const config = ({ filename, input, library, output, production }) => {
     let optimization = {
-            mangleWasmImports: false,
-            usedExports: false
+            mangleWasmImports: false
         };
 
     filename = filename || 'app';
-    production = production ? false : true;
+    production = production == 'true';
 
-    if (production) {
+    if (!production) {
         optimization.minimize = false;
     }
 
@@ -19,7 +19,7 @@ const config = ({ filename, input, library, output, production }) => {
         entry: {
             [(filename || 'app') + (production ? '.min' : '')]: input
         },
-        mode: (production ? 'development' : 'production'),
+        mode: (production ? 'production' : 'development'),
         module: {
             rules: [
                 {
@@ -37,6 +37,7 @@ const config = ({ filename, input, library, output, production }) => {
             path: output,
         },
         plugins: [
+            new NodePolyfillPlugin(),
             new webpack.ProvidePlugin({
                 Buffer: ['buffer', 'Buffer'],
                 process: 'process/browser'

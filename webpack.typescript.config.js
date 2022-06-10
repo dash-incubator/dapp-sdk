@@ -39,7 +39,12 @@ const config = ({ filename, input, library, output, production }) => {
             library: library || filename,
             path: output,
         },
-        plugins: [],
+        plugins: [
+            new webpack.ProvidePlugin({
+                Buffer: ['buffer', 'Buffer'],
+                process: 'process/browser'
+            })
+        ],
         resolve: {
             extensions: ['.js', '.ts', '.tsx'],
             fallback: {

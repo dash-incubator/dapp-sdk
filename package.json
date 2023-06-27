@@ -1,0 +1,18 @@
+{
+    "author": "ICJR",
+    "dependencies": {
+        "@esportsplus/validation": "^0.2.39",
+        "@esportsplus/web-storage": "^0.1.30",
+        "dash": "^3.24.11"
+    },
+    "devDependencies": {
+        "@esportsplus/webpack": "^0.1.8"
+    },
+    "name": "dapp-sdk",
+    "private": true,
+    "scripts": {
+        "build": "webpack build --env=production=true",
+        "dev": "webpack serve --env=production=false"
+    },
+    "version": "0.0.1"
+}

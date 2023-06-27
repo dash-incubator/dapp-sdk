@@ -1,12 +1,8 @@
-import { app, connection, contract, identity, store, Connection } from '../../src';
+import { app, connection, contract, identity, Connection } from '~/index';
 
-
-let account: Connection | null = null;
 
 (async function init() {
-    if (account) {
-        return;
-    }
+    let account: Connection | null = null;
 
     console.log('Connection: creating');
 
@@ -18,6 +14,12 @@ let account: Connection | null = null;
     });
 
     console.log('Connection: connected');
+
+    // console.log('Identity: topping up');
+
+    // await identity.topup(account, await account.identity.getId(), 5);
+
+    // console.log('Identity: topup done');
 
     if (!account.identity) {
         console.log('Identity: registering');
@@ -59,21 +61,4 @@ let account: Connection | null = null;
 
         console.log('Apps: registered');
     }
-
-    // console.log('Identity: topping up');
-
-    // await user.identity.topup(2);
-
-    // console.log('Identity: topup done');
-
-    let vault = store.local.accounts('some password goes here');
-
-    vault.set('example', {
-        identity: 'some identity',
-        mnemonic: 'some mnemonic'
-    });
-
-    store.local.apps.set('example', {
-        contractId: 'value'
-    });
 })();

@@ -7,12 +7,12 @@ export default (env: { production?: string }) => {
     return config.web({
         entry: {
             js: {
-                app: entry.js('storage/sandbox/index.ts')
+                app: entry.js('src/sandbox/index.ts')
             }
         },
         mode: production ? 'production': 'development',
         output: {
-            path: 'storage/sandbox/build'
+            path: 'src/sandbox/build'
         },
         use: ({ web }) => {
             web.html();

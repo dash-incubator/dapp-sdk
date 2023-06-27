@@ -11,8 +11,13 @@
     "name": "dapp-sdk",
     "private": true,
     "scripts": {
-        "build": "webpack build --env=production=true",
-        "dev": "webpack serve --env=production=false"
+        "build": "tsc && tsc-alias",
+        "-": "-",
+        "prepare": "npm run build",
+        "prepublishOnly": "npm run build",
+        "--": "--",
+        "sandbox:build": "webpack build --env=production=true",
+        "sandbox:dev": "webpack serve --env=production=false"
     },
     "version": "0.0.1"
 }

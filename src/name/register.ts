@@ -2,11 +2,14 @@ import { Connection, Document } from "~/types";
 
 
 export default ({ client, identity }: Connection, name: string): Promise<Document> => {
+    if (!identity) {
+        throw new Error('DAPP SDK: an identity is required to register a platform name');
+    }
+
     return client.platform.names.register(
         `${name}.dash`,
         {
-            // TODO: Require identity during connection?
-            dashUniqueIdentityId: identity!.getId()
+            dashUniqueIdentityId: identity.getId()
         },
         identity
     )

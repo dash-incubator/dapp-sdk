@@ -1,7 +1,7 @@
-import { Client, Identity } from "~/types";
+import { Connection, Identity } from "~/types";
 
 
-export default async ({ client }: { client: Client }, id: string = ''): Promise<Identity | undefined> => {
+export default async ({ client }: Connection, id: string = ''): Promise<Identity | undefined> => {
     if (!id) {
         let account = await client.getWalletAccount(),
             identities: string[] = await account.identities.getIdentityIds();

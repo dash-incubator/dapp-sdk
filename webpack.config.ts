@@ -7,7 +7,7 @@ export default (env: { production?: string }) => {
     return config.web({
         entry: {
             js: {
-                app: entry.js('src/sandbox/index.ts')
+                app: entry.js('src/sandbox/platform.ts')
             }
         },
         mode: production ? 'production': 'development',

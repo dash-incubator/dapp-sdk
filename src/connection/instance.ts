@@ -11,9 +11,6 @@ export default (client: Client, identity?: Identity) => {
                 });
             }
         },
-        disconnect: () => {
-            client.disconnect();
-        },
 
         get address() {
             return client.getWalletAccount()

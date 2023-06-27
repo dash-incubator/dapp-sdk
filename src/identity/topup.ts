@@ -16,5 +16,5 @@ export default async ({ client }: Connection, identity: string, total: number) =
         (duffs * (total * bips)) / bips
     );
 
-    return get({ client }, identity);
+    return get({ client } as Connection, identity);
 };

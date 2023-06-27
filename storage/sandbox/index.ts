@@ -1,4 +1,4 @@
-import { app, connection, contract, identity, Connection } from '../../src';
+import { app, connection, contract, identity, store, Connection } from '../../src';
 
 
 let account: Connection | null = null;
@@ -49,7 +49,13 @@ let account: Connection | null = null;
             Object.assign(contracts, apps[i]);
         }
 
-        account.apps.set('sdk', await contract.register(connection, contracts));
+        account.apps.set('sdk', await contract.register(account, contracts).then(response => {
+            let contract = response.getDataContract();
+
+            console.log(contract);
+
+            return contract;
+        }));
 
         console.log('Apps: registered');
     }
@@ -60,13 +66,14 @@ let account: Connection | null = null;
 
     // console.log('Identity: topup done');
 
-    // let content = 'else',
-    //     parent = '',
-    //     thread = 'somekey';
+    let vault = store.local.accounts('some password goes here');
 
-    // let value = await app.comment.save(
-    //     await app.comment.create({ '$id': 'Et9nK1zBrNb4Ffpn5PJ8vMVDmiqG5orDEftVyakjsAHs', content, parent, thread })
-    // );
+    vault.set('example', {
+        identity: 'some identity',
+        mnemonic: 'some mnemonic'
+    });
 
-    // console.log(value);
+    store.local.apps.set('example', {
+        contractId: 'value'
+    });
 })();

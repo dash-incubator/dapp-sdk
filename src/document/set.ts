@@ -75,6 +75,6 @@ export default async ({ client, identity }: Connection, documents: Documents | D
 
     // `transitions` returns saved document data with '$id'
     return await client.platform.documents.broadcast(batch, identity)
-        .then((response: Response) => response?.transitions || [])
+        .then((response: Response) => response?.toJSON()?.transitions || [])
         .catch((e: Error) => console.error('Something went wrong:\n', e));
 };

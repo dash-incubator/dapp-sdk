@@ -6,9 +6,11 @@ type Account = typeof Account.prototype;
 
 type Client = typeof Client.prototype;
 
-type Connection = Awaited<ReturnType<typeof instance>>;
+type Connection = Awaited< ReturnType<typeof instance> >;
 
 type Contract = typeof PlatformProtocol.DataContract.prototype;
+
+type ContractTransition = typeof PlatformProtocol.DataContractCreateTransition.prototype;
 
 type Definition = Record<PropertyKey, any>;
 
@@ -25,8 +27,7 @@ type Query = Record<PropertyKey, any>;
 
 type Response = {
     toJSON(): Record<PropertyKey, any>;
-    transitions?: Documents;
 };
 
 
-export type { Account, Client, Connection, Contract, Definition, Document, Documents, Identity, Query, Response };
+export type { Account, Client, Connection, Contract, ContractTransition, Definition, Document, Documents, Identity, Query, Response };

@@ -7,6 +7,6 @@ import name from './name';
 import store from './store';
 
 
-export * from './types';
 export default { app, connection, contract, document, identity, name, store };
+export type { Connection, Contract, ContractTransition, Definition, Document, Documents, Identity } from './types';
 export { app, connection, contract, document, identity, name, store };

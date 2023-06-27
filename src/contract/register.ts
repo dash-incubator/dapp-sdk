@@ -1,7 +1,7 @@
-import { Connection, Contract, Definition } from "~/types";
+import { Connection, ContractTransition, Definition } from "~/types";
 
 
-export default async ({ client, identity }: Connection, definition: Definition): Promise<Contract> => {
+export default async ({ client, identity }: Connection, definition: Definition): Promise<ContractTransition> => {
     let contract = await client.platform.contracts.create(definition, identity),
         result = await client.platform.dpp.dataContract.validate(contract);
 

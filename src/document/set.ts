@@ -2,16 +2,16 @@ import { Connection, Document, Documents, Response } from "~/types";
 
 
 export default async ({ client, identity }: Connection, documents: Documents | Document, locator: string): Promise<Documents> => {
+    if (!identity) {
+        throw new Error('DAPP SDK: platform identity is required to continue');
+    }
+
     if (!Array.isArray(documents)) {
         documents = [documents];
     }
 
     if (!documents.length) {
         return [];
-    }
-
-    if (!identity) {
-        throw new Error('DAPP SDK: an identity is required to save documents');
     }
 
     let batch = {

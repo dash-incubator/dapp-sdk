@@ -2,6 +2,10 @@ import { Connection, ContractTransition, Definition } from "~/types";
 
 
 export default async ({ client, identity }: Connection, definition: Definition): Promise<ContractTransition> => {
+    if (!identity) {
+        throw new Error('DAPP SDK: platform identity is required to continue');
+    }
+
     let contract = await client.platform.contracts.create(definition, identity),
         result = await client.platform.dpp.dataContract.validate(contract);
 

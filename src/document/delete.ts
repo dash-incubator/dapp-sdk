@@ -2,6 +2,10 @@ import { Connection, Documents, Document, Response } from "~/types";
 
 
 export default async ({ client, identity }: Connection, documents: Documents | Document): Promise<Documents> => {
+    if (!identity) {
+        throw new Error('DAPP SDK: platform identity is required to continue');
+    }
+
     if (!Array.isArray(documents)) {
         documents = [documents];
     }

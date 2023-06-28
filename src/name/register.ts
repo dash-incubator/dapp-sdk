@@ -3,7 +3,7 @@ import { Connection, Document } from "~/types";
 
 export default ({ client, identity }: Connection, name: string): Promise<Document> => {
     if (!identity) {
-        throw new Error('DAPP SDK: an identity is required to register a platform name');
+        throw new Error('DAPP SDK: platform identity is required to continue');
     }
 
     return client.platform.names.register(

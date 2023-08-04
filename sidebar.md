@@ -1,0 +1,10 @@
+- Getting started
+    - [Quick start](/README.md)
+- Usage
+    - [app](docs/app.md)
+    - [contract](docs/contract.md)
+    - [data](docs/data.md)
+    - [document](docs/document.md)
+    - [identity](docs/identity.md)
+    - [name](docs/name.md)
+    - [store](docs/store.md)

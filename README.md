@@ -1,6 +1,5 @@
 # DApp SDK Documentation
 
-
 ## Introduction
 
 Welcome to the documentation for the DApp SDK (Software Development Kit) provided by Dash Incubator. This SDK is designed to simplify the integration and development of decentralized applications (DApps) on the Dash blockchain.

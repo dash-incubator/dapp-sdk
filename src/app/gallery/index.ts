@@ -14,7 +14,7 @@ const get = async (connection: Connection, query: Query) => {
     return await document.get(connection, locator, query);
 };
 
-const set = async (connection: Connection, documents: Documents | Document, locator: string) => {
+const set = async (connection: Connection, documents: Documents | Document) => {
     return await document.set(connection, documents, locator);
 };
 

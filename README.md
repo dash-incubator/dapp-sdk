@@ -9,7 +9,7 @@ Welcome to the documentation for the DApp SDK (Software Development Kit) provide
 To use the DApp SDK in your project, you can either download the source code from the [GitHub repository](https://github.com/dash-incubator/dapp-sdk) or install it via npm.
 
 ```sh
-npm install @dash-incubator/dapp-sdk
+npm i git+https://github.com/dash-incubator/dapp-sdk.git
 ```
 
 ## Initialization

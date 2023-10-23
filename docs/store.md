@@ -17,7 +17,7 @@ DApps often require a mix of local and external storage. `store.local` provides 
 This adapter provides a secure local storage option for saving wallet details in browser storage. This is useful when developing client side apps/extensions that allow users to login to their wallets without retyping their seed phrase on each use.
 
 ```js
-import { store } from '@dash-incubator/dapp-sdk';
+import { store } from 'dapp-sdk';
 
 let accounts = store.local.accounts('[secret - required]');
 
@@ -32,7 +32,7 @@ accounts.set('primary', {
 In order to interact with Dash Platform documents you must have a list of `contractId`'s in order to get/set/delete documents associated with the contract. These are public so there's no need to encrypt/decrypt the values before get/set.
 
 ```js
-import { store } from '@dash-incubator/dapp-sdk';
+import { store } from 'dapp-sdk';
 
 let apps = store.local.apps,
     contractId = apps.get('notes');

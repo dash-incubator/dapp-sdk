@@ -8,14 +8,14 @@ Data encryption is useful for protecting private or sensitive information. We've
 
 ### decrypt
 ```js
-    import { data } from '@dash-incubator/dapp-sdk';
+    import { data } from 'dapp-sdk';
 
     let result = data.decrypt(account, '[value to decrypt]', /** secret ( optional ) **/);
 ```
 
 ### encrypt
 ```js
-    import { data } from '@dash-incubator/dapp-sdk';
+    import { data } from 'dapp-sdk';
 
     let result = data.encrypt(account, '[value to encrypt]', /** secret ( optional ) **/);
 ```

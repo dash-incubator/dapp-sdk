@@ -17,7 +17,7 @@ npm i git+https://github.com/dash-incubator/dapp-sdk.git
 Before you begin, you must establish a connection like this:
 
 ```js
-import { connection } from '@dash-incubator/dapp-sdk';
+import { connection } from 'dapp-sdk';
 
 let account;
 

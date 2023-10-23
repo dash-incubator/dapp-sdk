@@ -8,7 +8,7 @@ In order to interact with Dash Platform every wallet must register a unique iden
 
 ### get
 ```js
-    import { identity } from '@dash-incubator/dapp-sdk';
+    import { identity } from 'dapp-sdk';
 
     // Identity document
     let result = identity.get(account, /** id ( optional ) **/);
@@ -18,7 +18,7 @@ If an `id` is passed the function will fetch the identity from platform. Otherwi
 
 ### register
 ```js
-    import { identity } from '@dash-incubator/dapp-sdk';
+    import { identity } from 'dapp-sdk';
 
     // Identity document
     let result = identity.register(account);
@@ -29,7 +29,7 @@ If an `id` is passed the function will fetch the identity from platform. Otherwi
 Identities must contain a small amount of Dash to save data on Platform. This method acts like a deposit function for your Dash identity.
 
 ```js
-    import { identity } from '@dash-incubator/dapp-sdk';
+    import { identity } from 'dapp-sdk';
 
     // Identity documents
     let result = identity.topup(account, '[identity id]', '[amount in dash]');

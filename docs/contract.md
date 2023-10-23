@@ -8,7 +8,7 @@ Dash Platform Contracts act as constraints/interfaces for all documents associat
 
 ### get
 ```js
-    import { contract } from '@dash-incubator/dapp-sdk';
+    import { contract } from 'dapp-sdk';
 
     // Contract document
     let result = contract.get(account, id);
@@ -16,7 +16,7 @@ Dash Platform Contracts act as constraints/interfaces for all documents associat
 
 ### register
 ```js
-    import { contract } from '@dash-incubator/dapp-sdk';
+    import { contract } from 'dapp-sdk';
 
     // Contract document
     let result = contract.register(account, definition);

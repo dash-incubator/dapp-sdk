@@ -11,7 +11,7 @@ Dash Platform Documents contain all the data stored by Platform users. The follo
 Iterates through one or more documents to batch delete the documents from platform.
 
 ```js
-    import { document } from '@dash-incubator/dapp-sdk';
+    import { document } from 'dapp-sdk';
 
     let result = document.register(account, documents);
 ```
@@ -20,7 +20,7 @@ Iterates through one or more documents to batch delete the documents from platfo
 
 ### get
 ```js
-    import { document } from '@dash-incubator/dapp-sdk';
+    import { document } from 'dapp-sdk';
 
     let result = document.get(account, locator, query);
 ```
@@ -35,7 +35,7 @@ Iterates through one or more documents to batch delete the documents from platfo
 Once the filtering is complete a single batch transaction will be submit to apply the necessary changes to the Platform documents.
 
 ```js
-    import { document } from '@dash-incubator/dapp-sdk';
+    import { document } from 'dapp-sdk';
 
     let result = document.set(account, documents, locator);
 ```

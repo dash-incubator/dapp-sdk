@@ -11,7 +11,7 @@ The methods across each app follow the same structure as the document helper fun
 ### delete
 
 ```js
-    import { app } from '@dash-incubator/dapp-sdk';
+    import { app } from 'dapp-sdk';
 
     let result = app['[name]'].delete(account, documents);
 ```
@@ -20,7 +20,7 @@ The methods across each app follow the same structure as the document helper fun
 
 ### get
 ```js
-    import { app } from '@dash-incubator/dapp-sdk';
+    import { app } from 'dapp-sdk';
 
     let result = app['[name]'].get(account, query);
 ```
@@ -30,7 +30,7 @@ The methods across each app follow the same structure as the document helper fun
 ### set
 
 ```js
-    import { app } from '@dash-incubator/dapp-sdk';
+    import { app } from 'dapp-sdk';
 
     let result = app['[name]'].set(account, documents);
 ```

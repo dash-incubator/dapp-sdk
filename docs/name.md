@@ -8,14 +8,14 @@ Dash Platform provides a unique naming system across it's network. The following
 
 ### register
 ```js
-    import { name } from '@dash-incubator/dapp-sdk';
+    import { name } from 'dapp-sdk';
 
     let result = name.register(account, '[name]');
 ```
 
 ### search
 ```js
-    import { name } from '@dash-incubator/dapp-sdk';
+    import { name } from 'dapp-sdk';
 
     let result = name.search(account, '[name]');
 ```

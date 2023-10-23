@@ -8,6 +8,7 @@
     "devDependencies": {
         "@esportsplus/webpack": "^0.1.8"
     },
+    "main": "build/index.js",
     "name": "dapp-sdk",
     "private": true,
     "scripts": {
